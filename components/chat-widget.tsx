@@ -57,7 +57,7 @@ export function ChatWidget() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-white leading-tight">Help Assistant</p>
-                <p className="text-[10px] text-white/70 leading-tight">Mapleleaf Academy</p>
+                <p className="text-[10px] text-white/70 leading-tight">Shaun Herron</p>
               </div>
             </div>
             <button

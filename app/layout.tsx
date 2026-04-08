@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import {
-  ClerkProvider,
-  Show,
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
+import Link from "next/link";
+import { ClerkProvider } from "@clerk/nextjs";
+import { AppFooter } from "@/components/app-footer";
+import { AppHeaderAuth } from "@/components/app-header-auth";
 import { ChatWidget } from "@/components/chat-widget";
 import { AppNav } from "@/components/app-nav";
+import { MainShell } from "@/components/main-shell";
+import "@/components/case-study/case-study-template.css";
 import "./globals.css";
 
 const fontSans = Inter({
@@ -17,8 +17,14 @@ const fontSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mapleleaf Academy",
-  description: "Dataforms application",
+  title: "Shaun Herron",
+  description: "Prototype demos and case studies.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#dce7f1",
 };
 
 export default function RootLayout({
@@ -34,67 +40,31 @@ export default function RootLayout({
           style={{ background: "linear-gradient(to bottom, #ffffff 0%, #dce7f1 100%)", minHeight: "100vh" }}
           suppressHydrationWarning
         >
-          <header style={{ background: "rgba(255,255,255,0.85)", borderBottom: "1px solid #e5e7eb", position: "sticky", top: 0, zIndex: 40, backdropFilter: "blur(8px)" }}>
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                padding: "12px 32px",
-                display: "flex",
-                alignItems: "center",
-                minHeight: 56,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-                <Image src="/logo.png" alt="Logo" width={32} height={32} style={{ width: 32, height: 32 }} />
-                <span style={{ fontWeight: 600, fontSize: 14, color: "#0a6ab1" }}>Mapleleaf Academy</span>
-              </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
+          <header className="sticky top-0 z-[55] border-b border-[#e5e7eb] bg-[rgba(255,255,255,0.85)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(255,255,255,0.75)]">
+            <div className="relative flex min-h-14 w-full items-center gap-3 px-4 py-3 md:px-8">
+              <Link
+                href="/"
+                className="z-10 flex min-w-0 max-w-[45%] shrink-0 items-center gap-2.5 rounded-lg outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#0a6ab1]/40 md:absolute md:left-8 md:top-1/2 md:max-w-[min(240px,40vw)] md:-translate-y-1/2"
               >
+                <Image src="/logo.png" alt="" width={32} height={32} className="size-8 shrink-0" />
+                <span className="max-w-[5.5rem] truncate text-sm font-semibold text-[#0a6ab1] min-[380px]:max-w-[11rem] sm:max-w-none">
+                  Shaun Herron
+                </span>
+              </Link>
+
+              <div className="flex min-w-0 flex-1 justify-end md:absolute md:left-1/2 md:top-1/2 md:w-auto md:flex-none md:-translate-x-1/2 md:-translate-y-1/2 md:justify-center">
                 <AppNav />
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginLeft: "auto", flexShrink: 0 }}>
-                <Show when="signed-out">
-                  <SignInButton>
-                    <button className="rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity">
-                      Sign in
-                    </button>
-                  </SignInButton>
-                </Show>
-                <Show when="signed-in">
-                  <UserButton />
-                </Show>
+              <div className="hidden shrink-0 items-center gap-3 md:flex md:absolute md:right-8 md:top-1/2 md:-translate-y-1/2">
+                <AppHeaderAuth />
               </div>
-
             </div>
           </header>
 
-          <main className="flex-1" style={{ maxWidth: 1200, width: "100%", margin: "0 auto", padding: "40px 32px" }}>
-            {children}
-          </main>
+          <MainShell>{children}</MainShell>
 
-          <footer style={{ borderTop: "1px solid #e5e7eb", background: "rgba(255,255,255,0.6)", backdropFilter: "blur(8px)" }}>
-            <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-              <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>
-                © {new Date().getFullYear()} Mapleleaf Academy. All rights reserved.
-              </p>
-              <a
-                href="#"
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                style={{ textDecoration: "none" }}
-              >
-                Help
-              </a>
-            </div>
-          </footer>
+          <AppFooter />
 
           <ChatWidget />
 

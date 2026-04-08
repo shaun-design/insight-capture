@@ -450,7 +450,7 @@ function FieldPreview({ field }: { field: Field }) {
 function PreviewPageInner() {
   const searchParams = useSearchParams();
   const fromInsights = searchParams.get("source") === "insights";
-  const backHref = fromInsights ? "/" : "/forms/new";
+  const backHref = fromInsights ? "/admin" : "/forms/new";
   const backLabel = fromInsights ? "Back to Insight Capture" : "Back to Authoring";
 
   const [form, setForm] = useState<FormData | null>(null);

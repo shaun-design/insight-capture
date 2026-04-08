@@ -476,7 +476,7 @@ function FormAuthorPage({
     const id = draftIdRef.current;
     if (!id) return;
     setFormStatusOverride(id, "Published");
-    router.push("/");
+    router.push("/admin");
   }, [canPublish, router]);
 
   const handlePreview = useCallback(() => {
@@ -489,7 +489,7 @@ function FormAuthorPage({
       {/* Page header */}
       <div className="mb-8">
         <Link
-          href="/"
+          href="/admin"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
@@ -683,7 +683,7 @@ function FormAuthorPage({
       {/* Exit */}
       <div className="mt-4 px-1">
         <Link
-          href="/"
+          href="/admin"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           ← Exit Without Publishing

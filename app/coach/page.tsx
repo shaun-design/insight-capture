@@ -317,7 +317,7 @@ export default function CoachDemoPage() {
       </div>
 
       <div className="mt-6 px-1">
-        <Link href="/" className={cn(buttonVariants({ variant: "link" }), "h-auto p-0 text-sm")}>
+        <Link href="/admin" className={cn(buttonVariants({ variant: "link" }), "h-auto p-0 text-sm")}>
           ← Back To Admin Demo
         </Link>
       </div>

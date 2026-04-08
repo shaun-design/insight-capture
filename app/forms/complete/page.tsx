@@ -16,9 +16,9 @@ function AdminCompleteFormInner() {
       completionContext="admin"
       completerName={ADMIN_DEMO_COMPLETER}
       completerRole={ADMIN_DEMO_ROLE}
-      backHref="/"
+      backHref="/admin"
       backLabel="Back To Insight Capture"
-      doneExitHref="/"
+      doneExitHref="/admin"
       doneExitLabel="Back To Insight Capture"
       initialTemplateId={initialTemplateId}
     />
