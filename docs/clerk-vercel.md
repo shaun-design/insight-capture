@@ -61,17 +61,17 @@ Any other Clerk vars are SDK-only; add them only if you follow a Clerk guide tha
 
 ## `proxy.ts` behavior
 
-- If `CLERK_SECRET_KEY` is missing or blank in the **proxy bundle** (see `lib/clerk-secret.ts`), the proxy calls `NextResponse.next()` and **does not** run `clerkMiddleware`. On Vercel, ensure that variable is enabled for **Build** and **Runtime** so it is not compiled in as empty. `NEXT_PUBLIC_*` must still be set for the browser/Clerk UI.
-- If the secret is set, `clerkMiddleware` runs and **`auth.protect()`** applies only to paths matched by:
+- If **either** `CLERK_SECRET_KEY` or `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is missing in the environment visible to the build/runtime (see `lib/clerk-env.ts` / `isClerkConfigured()`), the proxy no-ops. On Vercel, enable **both** for **Production** and ensure they are available at **Build** (not Runtime-only). If the publishable key is missing at build, production HTML will show `publishableKey: ""` on `ClerkProvider` and `auth.protect()` can throw (500) instead of redirecting.
+- When both are set, `clerkMiddleware` runs and **`auth.protect()`** applies only to paths matched by:
   - `/admin` and subpaths
   - `/coach` and subpaths
   - `/forms` and subpaths
 
-**Layouts** under those segments call `enforceAppSegmentAuth()` (`connection()` + `auth.protect()` when the secret exists) so enforcement happens on real requests.
+**Layouts** under those segments call `enforceAppSegmentAuth()` (`connection()`, then `redirect('/sign-in')` if Clerk is not fully configured, else `auth.protect()`).
 
 **Public without sign-in** (marketing / case study): `/`, `/case-studies`, `/case-studies/*`, `/case-study`, `/sign-in`, `/sign-up`, and any other path not under the three prefixes above.
 
-**When the secret is not set:** `/admin`, `/coach`, and `/forms` are **not** protected at the edge or in layouts.
+**When either key is missing:** the proxy no-ops; protected layouts redirect to `/sign-in` instead of calling `auth.protect()` (avoids 500 when the publishable key was omitted at build).
 
 ## Disable / re-enable the edge proxy
 

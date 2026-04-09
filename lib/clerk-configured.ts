@@ -1,9 +1,14 @@
-import { readClerkSecretKey } from "@/lib/clerk-secret";
+import { readClerkPublishableKey, readClerkSecretKey } from "@/lib/clerk-env";
 
 /**
- * Whether `proxy.ts` should invoke `clerkMiddleware`. Uses bracket-based secret
- * read so the value is less likely to be inlined as empty at build time.
+ * Clerk middleware and `auth.protect()` both need a valid publishable key to
+ * build sign-in redirects. If only `CLERK_SECRET_KEY` is set (common when
+ * `NEXT_PUBLIC_*` was not available at build), `auth.protect()` throws and
+ * Next returns 500. Require both before running Clerk on the server.
  */
 export function isClerkConfigured(): boolean {
-  return readClerkSecretKey() !== undefined;
+  return (
+    readClerkSecretKey() !== undefined &&
+    readClerkPublishableKey() !== undefined
+  );
 }

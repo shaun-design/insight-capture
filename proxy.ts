@@ -4,12 +4,9 @@ import type { NextFetchEvent, NextRequest } from "next/server";
 import { isClerkConfigured } from "@/lib/clerk-configured";
 
 /**
- * Clerk runs when `readClerkSecretKey()` succeeds (see `lib/clerk-secret.ts`).
- * On Vercel, ensure `CLERK_SECRET_KEY` is available for **Build** and **Runtime**
- * so the proxy bundle is not compiled with an empty secret.
- *
- * App segments under /admin, /coach, /forms always call `auth.protect()` after
- * `connection()` (no env short-circuit).
+ * Clerk runs only when both secret and publishable keys resolve (`isClerkConfigured`).
+ * See `lib/clerk-configured.ts` — publishable must be present at **build** for
+ * redirects and ClerkProvider; secret must be set for Build + Runtime.
  */
 
 /** App surfaces that require sign-in when Clerk keys are set. */
