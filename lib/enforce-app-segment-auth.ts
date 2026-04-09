@@ -2,18 +2,20 @@ import { auth } from "@clerk/nextjs/server";
 import { connection } from "next/server";
 
 /**
- * For /admin, /coach, /forms layouts. Ensures we are not in a prerender/cache-only
- * path, then requires a Clerk session when a secret key is present.
+ * Server-side enforcement for /admin, /coach, /forms.
  *
- * Gate on `CLERK_SECRET_KEY` only (not `NEXT_PUBLIC_*`): publishable keys are
- * inlined at build time and can be absent in server bundles even when Vercel
- * provides them at runtime, which previously skipped `auth.protect()` and left
- * app routes public.
+ * Always calls `auth.protect()` (no "is secret present?" short-circuit). A
+ * missing `CLERK_SECRET_KEY` at build time used to make that check false so the
+ * guard never ran and pages stayed public.
+ *
+ * Requires `clerkMiddleware` / `proxy.ts` to run so Clerk can set request
+ * headers; otherwise `auth()` throws a clear configuration error instead of
+ * rendering the app shell.
  */
 export async function enforceAppSegmentAuth(): Promise<void> {
   await connection();
-  if (!process.env.CLERK_SECRET_KEY?.trim()) {
-    return;
+  if (process.env["CLERK_DEBUG_GUARD"] === "1") {
+    console.info("[clerk-guard] enforceAppSegmentAuth()", new Date().toISOString());
   }
   await auth.protect();
 }

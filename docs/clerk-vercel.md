@@ -61,7 +61,7 @@ Any other Clerk vars are SDK-only; add them only if you follow a Clerk guide tha
 
 ## `proxy.ts` behavior
 
-- If `CLERK_SECRET_KEY` is missing or blank, the proxy calls `NextResponse.next()` and **does not** run `clerkMiddleware` (avoids hard failures when the secret is not set). The gate uses the secret only so it matches server/runtime behavior; `NEXT_PUBLIC_*` is build-inlined and must still be set for the browser/Clerk UI.
+- If `CLERK_SECRET_KEY` is missing or blank in the **proxy bundle** (see `lib/clerk-secret.ts`), the proxy calls `NextResponse.next()` and **does not** run `clerkMiddleware`. On Vercel, ensure that variable is enabled for **Build** and **Runtime** so it is not compiled in as empty. `NEXT_PUBLIC_*` must still be set for the browser/Clerk UI.
 - If the secret is set, `clerkMiddleware` runs and **`auth.protect()`** applies only to paths matched by:
   - `/admin` and subpaths
   - `/coach` and subpaths

@@ -1,3 +1,4 @@
+import { ClerkGuardDebugBanner } from "@/components/clerk-guard-debug-banner";
 import { enforceAppSegmentAuth } from "@/lib/enforce-app-segment-auth";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,10 @@ export default async function CoachLayout({
   children: React.ReactNode;
 }) {
   await enforceAppSegmentAuth();
-  return <>{children}</>;
+  return (
+    <>
+      <ClerkGuardDebugBanner segment="coach" />
+      {children}
+    </>
+  );
 }
