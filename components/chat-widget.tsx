@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 
 interface Message {
@@ -18,6 +19,12 @@ const INITIAL_MESSAGES: Message[] = [
 ];
 
 export function ChatWidget() {
+  const pathname = usePathname();
+  const isCaseStudy =
+    pathname === "/" ||
+    pathname === "/case-studies" ||
+    pathname.startsWith("/case-studies/");
+
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
@@ -28,6 +35,8 @@ export function ChatWidget() {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, open]);
+
+  if (isCaseStudy) return null;
 
   function handleSend() {
     const text = input.trim();
@@ -48,7 +57,7 @@ export function ChatWidget() {
     <>
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-20 right-6 z-50 flex w-80 flex-col rounded-2xl border border-border bg-white shadow-[0_20px_60px_-10px_rgba(0,0,0,0.22),0_8px_24px_-6px_rgba(0,0,0,0.12)] overflow-hidden">
+        <div className="fixed bottom-20 left-4 right-4 z-50 flex flex-col rounded-2xl border border-border bg-white shadow-[0_20px_60px_-10px_rgba(0,0,0,0.22),0_8px_24px_-6px_rgba(0,0,0,0.12)] overflow-hidden sm:left-auto sm:right-6 sm:w-80">
           {/* Header */}
           <div className="flex items-center justify-between gap-3 bg-primary px-4 py-3">
             <div className="flex items-center gap-2.5">

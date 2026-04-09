@@ -177,7 +177,7 @@ export function ComponentPicker({ onSelect, children }: ComponentPickerProps) {
           <div className="relative z-10 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl bg-white shadow-lg border border-border overflow-hidden">
 
             {/* Header */}
-            <div className="flex items-start justify-between gap-4 border-b border-border px-8 py-6 shrink-0">
+            <div className="flex items-start justify-between gap-4 border-b border-border px-4 py-5 shrink-0 sm:px-8 sm:py-6">
               <div>
                 <h2 className="text-lg font-semibold text-foreground">Add a Component</h2>
                 <p className="mt-0.5 text-sm text-muted-foreground">
@@ -194,28 +194,28 @@ export function ComponentPicker({ onSelect, children }: ComponentPickerProps) {
 
             {/* Body */}
             <div className="overflow-y-auto">
-              <div className="grid grid-cols-3 divide-x divide-border">
+              <div className="flex flex-col divide-y divide-border sm:grid sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                 {COMPONENT_GROUPS.map((group) => (
-                  <div key={group.title} className="p-6 flex flex-col gap-4">
+                  <div key={group.title} className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">
                     <div>
                       <p className="text-sm font-semibold text-foreground">{group.title}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{group.subtitle}</p>
                     </div>
-                    <div className="flex flex-col gap-1">
+                    <div className="grid grid-cols-2 gap-1 sm:flex sm:flex-col">
                       {group.items.map((item) => (
                         <button
                           key={item.id}
                           onClick={() => handleSelect(item.id, item.name)}
-                          className="flex items-start gap-3 rounded-xl p-3 text-left hover:bg-muted/60 transition-colors group"
+                          className="flex items-center gap-3 rounded-xl p-3 text-left hover:bg-muted/60 transition-colors group sm:items-start"
                         >
-                          <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.iconBg}`}>
-                            <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+                          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl sm:mt-0.5 sm:h-10 sm:w-10 ${item.iconBg}`}>
+                            <item.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${item.iconColor}`} />
                           </div>
-                          <div>
+                          <div className="min-w-0">
                             <p className="text-sm font-medium text-foreground leading-snug group-hover:text-primary transition-colors">
                               {item.name}
                             </p>
-                            <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
+                            <p className="hidden text-xs text-muted-foreground mt-0.5 leading-snug sm:block">
                               {item.description}
                             </p>
                           </div>
@@ -228,7 +228,7 @@ export function ComponentPicker({ onSelect, children }: ComponentPickerProps) {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-end border-t border-border px-8 py-4 shrink-0">
+            <div className="flex justify-end border-t border-border px-4 py-4 shrink-0 sm:px-8">
               <Button variant="outline" size="sm" onClick={() => setOpen(false)}>
                 Cancel
               </Button>

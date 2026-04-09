@@ -90,8 +90,8 @@ function SortableOption({
       <Input
         value={option.value}
         onChange={(e) => onUpdate(option.id, "value", e.target.value)}
-        placeholder="Value: e.g. 1"
-        className="w-40 shrink-0"
+        placeholder="Value"
+        className="w-20 shrink-0 sm:w-36"
       />
       <Button
         variant="ghost"
@@ -227,22 +227,22 @@ export function SelectFieldEditor({
               </div>
             </div>
 
-            <div className="-mx-8 -mb-6 rounded-b-xl bg-muted/30 border-t border-border px-8 pt-6 pb-8">
-              <div className="px-6 py-5">
+            <div className="-mx-4 -mb-5 rounded-b-xl bg-muted/30 border-t border-border px-4 pt-5 pb-6 sm:-mx-8 sm:-mb-6 sm:px-8 sm:pt-6 sm:pb-8">
+              <div className="px-2 py-4 sm:px-6 sm:py-5">
                 <div className="flex flex-col gap-4">
                   <p className="text-sm font-semibold text-foreground">Settings</p>
 
-                  <div className="flex items-center gap-6">
-                    <span className="w-40 text-sm text-foreground/70">Required to Complete?</span>
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm text-foreground/70">Required to Complete?</span>
+                    <div className="flex shrink-0 items-center gap-2">
                       <Switch checked={settings.required} onCheckedChange={(v) => set("required", v)} />
                       <span className="text-sm text-foreground">Required</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-6">
-                    <span className="w-40 text-sm text-foreground/70">Comments</span>
-                    <label className="flex items-center gap-2 cursor-pointer">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm text-foreground/70">Comments</span>
+                    <label className="flex shrink-0 items-center gap-2 cursor-pointer">
                       <Checkbox
                         checked={settings.commentsEnabled}
                         onCheckedChange={(v) => set("commentsEnabled", !!v)}

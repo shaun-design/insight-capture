@@ -10,7 +10,7 @@ export interface StoredCoachCompletionRow {
   templateId: string;
   formName: string;
   category: string;
-  /** Short “who” label for the table (e.g. student first name) */
+  /** Short "who" label for the table (e.g. student first name) */
   about: string;
   completedAtIso: string;
   status: "Submitted";
@@ -53,7 +53,13 @@ export function appendCoachCompletion(
   return next;
 }
 
-/** Bumps the “Responses” count on the admin table for a published form id */
+export function deleteCoachCompletion(id: string) {
+  const list = readCoachCompletionsRaw().filter((r) => r.id !== id);
+  localStorage.setItem(COACH_COMPLETIONS_STORAGE_KEY, JSON.stringify(list));
+  dispatchCoachCompletionsChanged();
+}
+
+/** Bumps the "Responses" count on the admin table for a published form id */
 export function incrementPublishedFormResponseCount(formTableId: string) {
   if (typeof window === "undefined") return;
   try {
@@ -79,7 +85,7 @@ export function readFormResponseDeltas(): Record<string, number> {
   }
 }
 
-/** “Maya Johnson — Grade 5” → “Maya Johnson” */
+/** "Maya Johnson — Grade 5" → "Maya Johnson" */
 export function shortAboutFromOptionLabel(label: string): string {
   const sep = label.indexOf("—");
   return sep >= 0 ? label.slice(0, sep).trim() : label.trim();

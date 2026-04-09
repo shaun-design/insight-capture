@@ -15,6 +15,7 @@ import {
   readFormResponseDeltas,
   INSIGHTS_FORM_RESPONSE_DELTAS_EVENT,
   readCoachCompletionsRaw,
+  deleteCoachCompletion,
   COACH_COMPLETIONS_CHANGED_EVENT,
 } from "@/lib/coach-completions-storage";
 import {
@@ -71,7 +72,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-type Status = "Draft" | "Published" | "Archived" | "Scheduled" | "Closed";
+type Status = "Draft" | "Published" | "Archived" | "Scheduled";
 type ColumnKey = "category" | "owner" | "lastUpdated" | "status" | "responses" | "assignedTo";
 type AdminMainTab = "templates" | "completions";
 
@@ -184,7 +185,7 @@ const initialForms: DataForm[] = [
     purpose: "Reporting",
     owner: "Maria Gonzalez",
     lastUpdated: "Jan 10, 2026",
-    status: "Closed",
+    status: "Archived",
     responses: 64,
     assignedTo: "All Staff",
   },
@@ -209,11 +210,6 @@ const statusConfig: Record<Status, { label: string; className: string }> = {
     label: "Scheduled",
     className:
       "bg-blue-100 text-blue-700 hover:bg-blue-100 border-transparent dark:bg-blue-950 dark:text-blue-400",
-  },
-  Closed: {
-    label: "Closed",
-    className:
-      "bg-muted text-muted-foreground/60 hover:bg-muted border-transparent",
   },
 };
 
@@ -263,7 +259,7 @@ function StatusBadge({ status }: { status: Status }) {
 }
 
 const ALL_FILTER = "All";
-const statusFilters = [ALL_FILTER, "Published", "Draft", "Scheduled", "Archived", "Closed"] as const;
+const statusFilters = [ALL_FILTER, "Published", "Draft", "Scheduled", "Archived"] as const;
 type FilterValue = (typeof statusFilters)[number];
 
 const CONFIRM_COPY = {
@@ -454,13 +450,6 @@ function ActionsMenu({
               Publish Now
             </DropdownMenuItem>
           </>
-        )}
-
-        {form.status === "Closed" && (
-          <DropdownMenuItem onClick={goViewPublished}>
-            <Eye className="mr-2 h-4 w-4" />
-            View
-          </DropdownMenuItem>
         )}
 
       </DropdownMenuContent>
@@ -666,19 +655,19 @@ export default function DataFormsPage() {
         />
       )}
       {/* Page header */}
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <div className="max-w-2xl">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-2xl text-center sm:text-left">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Insight Capture
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Create and manage structured forms for prototype scenarios — from
-            classroom observations and behavior logs to grant documentation and
-            coaching notes.
+            Create and manage structured forms across your organization,
+            including classroom observations, behavior logs, grant
+            documentation, and coaching notes.
           </p>
         </div>
-        <div className="inline-flex flex-col items-stretch gap-1.5 sm:items-end">
-          <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="inline-flex flex-col items-stretch gap-1.5 sm:items-end sm:shrink-0">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
             <Link
               href="/forms/complete"
               className={cn(buttonVariants({ variant: "outline", size: "default" }), "gap-2")}
@@ -710,7 +699,7 @@ export default function DataFormsPage() {
 
       {/* Table card */}
       <div className="min-w-0 overflow-hidden rounded-xl border border-border bg-white shadow-sm">
-        <div className="border-b border-border px-8 pt-6">
+        <div className="border-b border-border px-4 pt-5 sm:px-8 sm:pt-6">
           <div role="tablist" aria-label="Form library" className="flex gap-6">
             <button
               type="button"
@@ -744,11 +733,12 @@ export default function DataFormsPage() {
         </div>
 
         {adminMainTab === "templates" ? (
-        <div className="px-8 pb-8 pt-4">
+        <div className="px-4 pb-6 pt-4 sm:px-8 sm:pb-8">
         {/* Toolbar */}
-        <div className="flex items-center justify-between gap-4 py-3">
-          {/* Status filter tabs */}
-          <div className="flex items-center gap-1">
+        <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Status filter tabs — scrollable strip on narrow screens */}
+          <div className="-mx-1 overflow-x-auto">
+            <div className="flex min-w-max items-center gap-1 px-1">
             {statusFilters.map((f) => (
               <button
                 key={f}
@@ -762,22 +752,23 @@ export default function DataFormsPage() {
                 {f}
               </button>
             ))}
+            </div>
           </div>
 
           {/* Search + columns */}
           <div className="flex items-center gap-2">
-            <div className="relative w-56">
+            <div className="relative min-w-0 flex-1 sm:w-56 sm:flex-none">
               <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search forms…"
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="h-8 pl-8 text-sm"
+                className="h-8 w-full pl-8 text-sm"
               />
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 shrink-0")}
               >
                 <Columns3 className="h-4 w-4" />
                 Columns
@@ -827,15 +818,15 @@ export default function DataFormsPage() {
         <div className="h-4" />
 
         {/* Table */}
-        <div className="-mx-2 max-w-full min-w-0 overflow-x-auto px-2">
-        <Table className="w-full min-w-[880px] table-auto">
+        <div className="overflow-x-auto">
+        <Table className="w-full table-fixed">
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">
-              <TableHead className="w-[18%] min-w-[7rem] max-w-[12rem] py-4 font-semibold text-foreground">
+              <TableHead className="py-4 font-semibold text-foreground">
                 Form Name
               </TableHead>
               {visibleColumns.category && (
-                <TableHead className="w-[12%] min-w-[6rem] max-w-[11rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden w-[12%] min-w-[6rem] max-w-[11rem] py-4 font-semibold text-foreground sm:table-cell">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-semibold text-foreground hover:text-primary transition-colors">
                       Category
@@ -855,7 +846,7 @@ export default function DataFormsPage() {
                 </TableHead>
               )}
               {visibleColumns.owner && (
-                <TableHead className="w-[14%] min-w-[7rem] max-w-[11rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden w-[14%] min-w-[7rem] max-w-[11rem] py-4 font-semibold text-foreground sm:table-cell">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-semibold text-foreground hover:text-primary transition-colors">
                       Owner
@@ -875,24 +866,24 @@ export default function DataFormsPage() {
                 </TableHead>
               )}
               {visibleColumns.lastUpdated && (
-                <TableHead className="w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
                   Last Updated
                 </TableHead>
               )}
               {visibleColumns.status && (
-                <TableHead className="w-[8rem] min-w-[8rem] py-4 font-semibold text-foreground">Status</TableHead>
+                <TableHead className="w-28 py-4 font-semibold text-foreground">Status</TableHead>
               )}
               {visibleColumns.responses && (
-                <TableHead className="w-[5.5rem] min-w-[5.5rem] py-4 text-right font-semibold text-foreground">
+                <TableHead className="hidden w-[5.5rem] py-4 text-right font-semibold text-foreground sm:table-cell">
                   Responses
                 </TableHead>
               )}
               {visibleColumns.assignedTo && (
-                <TableHead className="min-w-[10rem] max-w-[18rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                   Assigned To
                 </TableHead>
               )}
-              <TableHead className="w-12 min-w-12 max-w-12 py-4" />
+              <TableHead className="w-12 py-4" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -910,7 +901,7 @@ export default function DataFormsPage() {
             )}
             {paginated.map((form) => (
               <TableRow key={form.id} className="group">
-                <TableCell className="min-w-0 max-w-[12rem] overflow-hidden py-5 align-middle whitespace-normal">
+                <TableCell className="overflow-hidden py-4 align-middle">
                   {form.isLocalDraft ? (
                     <Link
                       href="/forms/new"
@@ -927,31 +918,34 @@ export default function DataFormsPage() {
                       <span className="block truncate">{form.name}</span>
                     </span>
                   )}
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
+                    {[form.owner, form.lastUpdated].filter(Boolean).join(" · ")}
+                  </span>
                 </TableCell>
                 {visibleColumns.category && (
-                  <TableCell className="min-w-0 max-w-[11rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                     <span className="block truncate" title={form.purpose}>
                       {form.purpose}
                     </span>
                   </TableCell>
                 )}
                 {visibleColumns.owner && (
-                  <TableCell className="min-w-0 max-w-[11rem] overflow-hidden py-5 align-middle whitespace-normal">
+                  <TableCell className="hidden min-w-0 py-4 align-middle sm:table-cell">
                     <OwnerAvatar name={form.owner} />
                   </TableCell>
                 )}
                 {visibleColumns.lastUpdated && (
-                  <TableCell className="w-[7.5rem] min-w-[7.5rem] max-w-[7.5rem] overflow-hidden py-5 align-middle whitespace-nowrap text-sm text-muted-foreground">
+                  <TableCell className="hidden w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
                     {form.lastUpdated}
                   </TableCell>
                 )}
                 {visibleColumns.status && (
-                  <TableCell className="min-w-0 overflow-hidden py-5 align-middle whitespace-nowrap">
+                  <TableCell className="py-4 align-middle whitespace-nowrap">
                     <StatusBadge status={form.status} />
                   </TableCell>
                 )}
                 {visibleColumns.responses && (
-                  <TableCell className="w-[5.5rem] min-w-[5.5rem] max-w-[5.5rem] overflow-hidden py-5 text-right align-middle whitespace-nowrap text-sm text-muted-foreground">
+                  <TableCell className="hidden w-[5.5rem] py-4 text-right align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
                     {form.responses > 0 ? (
                       form.responses.toLocaleString()
                     ) : (
@@ -960,13 +954,13 @@ export default function DataFormsPage() {
                   </TableCell>
                 )}
                 {visibleColumns.assignedTo && (
-                  <TableCell className="min-w-0 max-w-[18rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                     <span className="block truncate" title={form.assignedTo}>
                       {form.assignedTo}
                     </span>
                   </TableCell>
                 )}
-                <TableCell className="w-12 min-w-12 max-w-12 overflow-hidden py-5 align-middle">
+                <TableCell className="w-12 py-4 align-middle">
                   <ActionsMenu
                     form={form}
                     onStatusChange={handleStatusChange}
@@ -987,9 +981,9 @@ export default function DataFormsPage() {
               ? "No results"
               : `${firstItem}–${lastItem} of ${filtered.length} form${filtered.length !== 1 ? "s" : ""}`}
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Rows per page</span>
+              <span className="hidden text-xs text-muted-foreground sm:inline">Rows per page</span>
               <Select
                 value={String(pageSize)}
                 onValueChange={(val) => {
@@ -1035,7 +1029,7 @@ export default function DataFormsPage() {
         </div>
         </div>
         ) : (
-        <div className="px-8 pb-8 pt-4">
+        <div className="px-4 pb-6 pt-4 sm:px-8 sm:pb-8">
           <div className="flex flex-col gap-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
               Submissions from coaches and admins who finished a form in this demo.
@@ -1056,34 +1050,35 @@ export default function DataFormsPage() {
 
           <div className="h-4" />
 
-          <div className="-mx-2 max-w-full min-w-0 overflow-x-auto px-2">
-            <Table className="w-full min-w-[720px] table-auto">
+          <div className="overflow-x-auto">
+            <Table className="w-full table-fixed">
               <TableHeader>
                 <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="w-[26%] min-w-[8rem] max-w-[16rem] py-4 font-semibold text-foreground">
+                  <TableHead className="py-4 font-semibold text-foreground">
                     Form name
                   </TableHead>
-                  <TableHead className="min-w-[6rem] max-w-[10rem] py-4 font-semibold text-foreground">
+                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                     Category
                   </TableHead>
-                  <TableHead className="min-w-[6rem] max-w-[10rem] py-4 font-semibold text-foreground">
+                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                     About
                   </TableHead>
-                  <TableHead className="min-w-[7rem] max-w-[10rem] py-4 font-semibold text-foreground">
+                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                     Completed by
                   </TableHead>
-                  <TableHead className="w-[7.5rem] min-w-[7.5rem] py-4 font-semibold text-foreground">
+                  <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
                     Completed
                   </TableHead>
-                  <TableHead className="w-[6.5rem] min-w-[6.5rem] py-4 font-semibold text-foreground">
+                  <TableHead className="w-28 py-4 font-semibold text-foreground">
                     Status
                   </TableHead>
+                  <TableHead className="w-10 py-4" />
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {completionsFiltered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="py-20 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={7} className="py-20 text-center text-sm text-muted-foreground">
                       {completionsSearch.trim()
                         ? "No completed forms match your search."
                         : "No completed forms yet. Use Complete a Form to submit one."}
@@ -1092,40 +1087,63 @@ export default function DataFormsPage() {
                 )}
                 {completionsPaginated.map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell className="min-w-0 max-w-[16rem] overflow-hidden py-5 align-middle whitespace-normal font-medium text-foreground">
+                    <TableCell className="overflow-hidden py-4 align-middle font-medium text-foreground">
                       <span className="block truncate" title={row.formName}>
                         {row.formName}
                       </span>
+                      <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
+                        {row.category} · {row.completedBy} · {new Date(row.completedAtIso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </span>
                     </TableCell>
-                    <TableCell className="min-w-0 max-w-[10rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                       <span className="block truncate" title={row.category}>
                         {row.category}
                       </span>
                     </TableCell>
-                    <TableCell className="min-w-0 max-w-[10rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                       <span className="block truncate" title={row.about}>
                         {row.about}
                       </span>
                     </TableCell>
-                    <TableCell className="min-w-0 max-w-[10rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                       <span className="block truncate" title={row.completedBy}>
                         {row.completedBy}
                       </span>
                     </TableCell>
-                    <TableCell className="w-[7.5rem] min-w-[7.5rem] overflow-hidden py-5 align-middle whitespace-nowrap text-sm text-muted-foreground">
+                    <TableCell className="hidden w-[7.5rem] py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                       {new Date(row.completedAtIso).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
                       })}
                     </TableCell>
-                    <TableCell className="min-w-0 overflow-hidden py-5 align-middle whitespace-nowrap">
+                    <TableCell className="py-4 align-middle">
                       <Badge
                         className="border-transparent bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-400"
                         variant="outline"
                       >
                         {row.status}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="w-10 py-4 align-middle">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Open actions</span>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40">
+                          <DropdownMenuItem
+                            className="text-destructive focus:text-destructive"
+                            onClick={() => {
+                              deleteCoachCompletion(row.id);
+                              setCompletionsSync((n) => n + 1);
+                            }}
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -1139,9 +1157,9 @@ export default function DataFormsPage() {
                 ? "No results"
                 : `${completionsFirst}–${completionsLast} of ${completionsFiltered.length} submission${completionsFiltered.length !== 1 ? "s" : ""}`}
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Rows per page</span>
+                <span className="hidden text-xs text-muted-foreground sm:inline">Rows per page</span>
                 <Select
                   value={String(pageSize)}
                   onValueChange={(val) => {

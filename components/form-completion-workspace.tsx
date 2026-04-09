@@ -89,24 +89,21 @@ function CompletionActionBar({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 bg-white/95 px-8 py-4 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between",
+        "flex items-center justify-between gap-3 bg-white/95 px-4 py-4 backdrop-blur-sm sm:px-8",
         className
       )}
     >
-      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="shrink-0"
-          onClick={onClearRequest}
-        >
-          Clear Form
-        </Button>
-      </div>
-      <div className="flex shrink-0 items-center justify-end gap-4">
+      <Button
+        type="button"
+        variant="outline"
+        className="shrink-0"
+        onClick={onClearRequest}
+      >
+        Clear Form
+      </Button>
+      <div className="flex shrink-0 items-center gap-3">
         {saveLabel ? (
-          <span className="flex items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground">
+          <span className="hidden items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground sm:flex">
             {saveState === "saving" ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
             ) : (
@@ -115,7 +112,7 @@ function CompletionActionBar({
             {saveLabel}
           </span>
         ) : null}
-        <Button type="button" size="lg" className="shrink-0" onClick={onSubmit}>
+        <Button type="button" className="shrink-0" onClick={onSubmit}>
           Submit and Finish
         </Button>
       </div>
@@ -286,7 +283,7 @@ export function FormCompletionWorkspace({
       </Link>
 
       <div className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
-        <div className="border-b border-border px-8 py-6">
+        <div className="border-b border-border px-4 py-5 sm:px-8 sm:py-6">
           <h1 className="text-xl font-semibold text-foreground">Complete a Form</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Same experience for admins and coaches: pick a form, say who it&apos;s for, answer below.
@@ -295,9 +292,9 @@ export function FormCompletionWorkspace({
         </div>
 
         {/* Metadata — aligned with author preview (date, time, completer, subject, form picks) */}
-        <div className="flex flex-col gap-4 border-b border-border bg-muted/20 px-8 py-5">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-4 border-b border-border bg-muted/20 px-4 py-5 sm:px-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <div className="flex flex-col gap-1.5 sm:flex-1">
               <label className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-foreground/75 uppercase">
                 <CalendarIcon className="h-3.5 w-3.5" /> Date
               </label>
@@ -366,13 +363,13 @@ export function FormCompletionWorkspace({
             <span className="text-xs font-medium tracking-wide text-foreground/75 uppercase">
               Completing as
             </span>
-            <div className="flex h-9 items-center gap-3 rounded-md border border-input bg-white px-3">
+            <div className="flex h-9 min-w-0 items-center gap-2 rounded-md border border-input bg-white px-3">
               <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
                 {completerInitials(completerName)}
               </div>
-              <span className="text-sm font-medium text-foreground">{completerName}</span>
-              <span className="text-xs text-foreground/70">·</span>
-              <span className="text-xs text-foreground/70">{completerRole}</span>
+              <span className="min-w-0 truncate text-sm font-medium text-foreground">{completerName}</span>
+              <span className="shrink-0 text-xs text-foreground/70">·</span>
+              <span className="shrink-0 text-xs text-foreground/70">{completerRole}</span>
             </div>
           </div>
 
@@ -433,7 +430,7 @@ export function FormCompletionWorkspace({
           </div>
         ) : template ? (
           <>
-            <div className="border-b border-border px-8 py-5">
+            <div className="border-b border-border px-4 py-5 sm:px-8">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <h2 className="text-lg font-semibold text-foreground">{template.title}</h2>
@@ -453,13 +450,13 @@ export function FormCompletionWorkspace({
             </div>
 
             <CompletionActionBar
-              className="border-b border-border"
+              className="hidden border-b border-border sm:flex"
               saveState={saveState}
               onClearRequest={() => setClearOpen(true)}
               onSubmit={handleSubmitAndFinish}
             />
 
-            <div className="max-h-[min(65vh,640px)] overflow-y-auto overflow-x-hidden px-8 py-6">
+            <div className="max-h-[min(65vh,640px)] overflow-y-auto overflow-x-hidden px-4 py-5 sm:px-8 sm:py-6">
               <CoachCompletionFields
                 fields={template.fields}
                 answers={answers}
@@ -501,13 +498,12 @@ export function FormCompletionWorkspace({
       <Dialog open={doneOpen} onOpenChange={handleDoneOpenChange}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Thanks — you&apos;re all set</DialogTitle>
+            <DialogTitle>Submission complete.</DialogTitle>
             <DialogDescription>
-              This response was marked complete. In a full product it would be sent to your
-              organization; here we only clear your local draft.
+              Your response has been saved.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-center gap-2 pt-2">
             <Link href={doneExitHref} className={cn(buttonVariants())}>
               {doneExitLabel}
             </Link>

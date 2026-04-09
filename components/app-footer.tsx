@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type AppFooterProps = {
   /** When false, hides the Help link (e.g. prototype sign-in). */
   showHelp?: boolean;
 };
 
+const CASE_STUDY_PATHS = ["/", "/case-studies"];
+
 export function AppFooter({ showHelp = true }: AppFooterProps) {
+  const pathname = usePathname();
+  const isCaseStudyPage =
+    CASE_STUDY_PATHS.includes(pathname) || pathname.startsWith("/case-studies/");
+  const displayHelp = showHelp && !isCaseStudyPage;
+
   return (
     <footer
       style={{
@@ -23,7 +31,7 @@ export function AppFooter({ showHelp = true }: AppFooterProps) {
           padding: "20px 32px",
           display: "flex",
           alignItems: "center",
-          justifyContent: showHelp ? "space-between" : "flex-start",
+          justifyContent: displayHelp ? "space-between" : "flex-start",
           gap: 16,
           flexWrap: "wrap",
         }}
@@ -31,7 +39,7 @@ export function AppFooter({ showHelp = true }: AppFooterProps) {
         <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>
           © {new Date().getFullYear()} Shaun Herron. All rights reserved.
         </p>
-        {showHelp && (
+        {displayHelp && (
           <Link
             href="#"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"

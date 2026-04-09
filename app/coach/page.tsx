@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -20,10 +19,17 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Search, ChevronLeft, ChevronRight, FileEdit } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, FileEdit, MoreHorizontal, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   readCoachCompletionsRaw,
+  deleteCoachCompletion,
   COACH_COMPLETIONS_CHANGED_EVENT,
 } from "@/lib/coach-completions-storage";
 /** Demo coach identity — only completions by this user appear in the table */
@@ -102,6 +108,7 @@ export default function CoachDemoPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [completionSync, setCompletionSync] = useState(0);
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     function bump() {
@@ -136,10 +143,19 @@ export default function CoachDemoPage() {
     const byId = new Map<string, CoachCompletion>();
     for (const r of fromMock) byId.set(r.id, r);
     for (const r of fromStorage) byId.set(r.id, r);
-    return Array.from(byId.values()).sort(
-      (a, b) => new Date(b.completedAtIso).getTime() - new Date(a.completedAtIso).getTime()
-    );
-  }, [completionSync]);
+    return Array.from(byId.values())
+      .filter((r) => !hiddenIds.has(r.id))
+      .sort((a, b) => new Date(b.completedAtIso).getTime() - new Date(a.completedAtIso).getTime());
+  }, [completionSync, hiddenIds]);
+
+  function handleDelete(id: string) {
+    const inStorage = readCoachCompletionsRaw().some((r) => r.id === id);
+    if (inStorage) {
+      deleteCoachCompletion(id);
+    } else {
+      setHiddenIds((prev) => new Set([...prev, id]));
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -161,62 +177,62 @@ export default function CoachDemoPage() {
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl text-center sm:text-left">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Coach Demo</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            View forms you have completed as a coach ({COACH_DEMO_COMPLETER}). Open a new form to
-            fill out when you are ready.
+            View your completed coaching forms. Open a new form to begin.
           </p>
         </div>
         <div className="flex shrink-0 flex-col items-stretch sm:items-end">
-          <Button type="button" size="lg" className="gap-2" onClick={() => router.push("/coach/complete")}>
+          <Button type="button" className="gap-2" onClick={() => router.push("/coach/complete")}>
             <FileEdit className="h-4 w-4" />
             Complete a Form
           </Button>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-white p-8 shadow-sm">
-        <div className="flex items-center justify-between gap-4 px-4 py-3">
-          <p className="text-sm font-medium text-foreground">Your completed forms</p>
-          <div className="relative w-56">
+      <div className="rounded-xl border border-border bg-white shadow-sm">
+        <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p className="text-base font-semibold text-foreground">Your Completed Forms</p>
+          <div className="relative w-full sm:w-56">
             <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-8 pl-8 text-sm"
+              className="h-8 w-full pl-8 text-sm"
             />
           </div>
         </div>
 
-        <div className="h-4" />
+        <div className="h-2 sm:h-4" />
 
-        <div className="-mx-2 max-w-full min-w-0 overflow-x-auto px-2">
-          <Table className="w-full min-w-[720px] table-auto">
+        <div className="overflow-x-auto">
+          <Table className="w-full table-fixed">
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40">
-                <TableHead className="w-[28%] min-w-[8rem] max-w-[16rem] py-4 font-semibold text-foreground">
+                <TableHead className="py-4 font-semibold text-foreground">
                   Form name
                 </TableHead>
-                <TableHead className="min-w-[6rem] max-w-[10rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                   Category
                 </TableHead>
-                <TableHead className="min-w-[6rem] max-w-[10rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
                   About
                 </TableHead>
-                <TableHead className="w-[7.5rem] min-w-[7.5rem] py-4 font-semibold text-foreground">
+                <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
                   Completed
                 </TableHead>
-                <TableHead className="w-[8.5rem] min-w-[8.5rem] py-4 font-semibold text-foreground">
+                <TableHead className="w-28 py-4 font-semibold text-foreground">
                   Status
                 </TableHead>
+                <TableHead className="w-10 py-4" />
               </TableRow>
             </TableHeader>
             <TableBody>
               {paginated.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-16 text-center text-sm text-muted-foreground">
+                  <TableCell colSpan={6} className="py-16 text-center text-sm text-muted-foreground">
                     {search
                       ? "No forms match your search."
                       : "You have no completed forms yet. Use Complete a Form to get started."}
@@ -225,25 +241,28 @@ export default function CoachDemoPage() {
               )}
               {paginated.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell className="min-w-0 max-w-[16rem] overflow-hidden py-5 align-middle whitespace-normal font-medium text-foreground">
+                  <TableCell className="overflow-hidden py-4 align-middle font-medium text-foreground">
                     <span className="block truncate" title={row.formName}>
                       {row.formName}
                     </span>
+                    <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
+                      {row.category} · {row.about} · {row.completedAt}
+                    </span>
                   </TableCell>
-                  <TableCell className="min-w-0 max-w-[10rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                     <span className="block truncate" title={row.category}>
                       {row.category}
                     </span>
                   </TableCell>
-                  <TableCell className="min-w-0 max-w-[10rem] overflow-hidden py-5 align-middle whitespace-normal text-sm text-muted-foreground">
+                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
                     <span className="block truncate" title={row.about}>
                       {row.about}
                     </span>
                   </TableCell>
-                  <TableCell className="w-[7.5rem] min-w-[7.5rem] overflow-hidden py-5 align-middle whitespace-nowrap text-sm text-muted-foreground">
+                  <TableCell className="hidden w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
                     {row.completedAt}
                   </TableCell>
-                  <TableCell className="min-w-0 overflow-hidden py-5 align-middle whitespace-nowrap">
+                  <TableCell className="py-4 align-middle whitespace-nowrap">
                     <span
                       className={cn(
                         "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
@@ -255,21 +274,38 @@ export default function CoachDemoPage() {
                       {row.status}
                     </span>
                   </TableCell>
+                  <TableCell className="w-10 py-4 align-middle">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Open actions</span>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => handleDelete(row.id)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
 
-        <div className="flex items-center justify-between border-t border-border px-4 py-3">
+        <div className="flex items-center justify-between gap-3 border-t border-border px-4 py-3">
           <p className="text-xs text-muted-foreground">
             {filtered.length === 0
               ? "No results"
-              : `${firstItem}–${lastItem} of ${filtered.length} form${filtered.length !== 1 ? "s" : ""}`}
+              : `${firstItem}–${lastItem} of ${filtered.length}`}
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Rows per page</span>
+              <span className="hidden text-xs text-muted-foreground sm:inline">Rows per page</span>
               <Select
                 value={String(pageSize)}
                 onValueChange={(val) => {
@@ -316,11 +352,6 @@ export default function CoachDemoPage() {
         </div>
       </div>
 
-      <div className="mt-6 px-1">
-        <Link href="/admin" className={cn(buttonVariants({ variant: "link" }), "h-auto p-0 text-sm")}>
-          ← Back To Admin Demo
-        </Link>
-      </div>
     </div>
   );
 }

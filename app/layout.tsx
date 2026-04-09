@@ -45,7 +45,7 @@ export default async function RootLayout({
         style={{ background: "linear-gradient(to bottom, #ffffff 0%, #dce7f1 100%)", minHeight: "100vh" }}
         suppressHydrationWarning
       >
-        <header className="sticky top-0 z-[55] border-b border-[#e5e7eb] bg-[rgba(255,255,255,0.85)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(255,255,255,0.75)]">
+        <header className="sticky top-0 z-[55] border-b border-[#e5e7eb] bg-white">
           {signInShell ? (
             <div className="flex min-h-14 w-full items-center px-4 py-3 md:px-8">
               <Link

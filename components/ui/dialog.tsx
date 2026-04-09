@@ -42,8 +42,9 @@ function DialogPopup({ className, children, ...props }: DialogPrimitive.Popup.Pr
         data-slot="dialog-popup"
         className={cn(
           "fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
-          "w-full max-w-4xl max-h-[90vh] overflow-y-auto",
+          "w-[calc(100%-2rem)] max-w-lg max-h-[90vh] overflow-y-auto",
           "rounded-2xl bg-white shadow-2xl border border-border",
+          "p-6",
           "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
           "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           "duration-150",

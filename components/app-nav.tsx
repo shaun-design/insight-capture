@@ -99,7 +99,7 @@ export function AppNav() {
       <>
         <button
           type="button"
-          className="fixed left-0 right-0 top-20 bottom-0 z-[100] bg-black/40 backdrop-blur-[1px]"
+          className="fixed left-0 right-0 top-14 bottom-0 z-[100] bg-black/40 backdrop-blur-[1px]"
           aria-label="Close menu"
           onClick={() => setMenuOpen(false)}
         />
@@ -108,7 +108,7 @@ export function AppNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Demo navigation"
-          className="fixed left-0 right-0 top-20 bottom-0 z-[101] flex flex-col overflow-y-auto overscroll-contain border-t border-neutral-200 bg-white shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+          className="fixed left-0 right-0 top-14 bottom-0 z-[101] flex flex-col overflow-y-auto overscroll-contain border-t border-neutral-200 bg-white shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
         >
           <div className="shrink-0 border-b border-neutral-100 px-4 py-3">
             <p className="text-xs font-semibold tracking-wide text-neutral-500">

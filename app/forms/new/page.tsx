@@ -204,7 +204,7 @@ function SortableField({
           : "border-border shadow-sm"
       }`}
     >
-      <div className="flex items-center gap-3 border-b border-border/60 bg-muted/20 pl-8 pr-2.5 py-2.5">
+      <div className="flex items-center gap-3 border-b border-border/60 bg-muted/20 pl-4 pr-2.5 py-2.5 sm:pl-8">
         <button
           {...attributes}
           {...listeners}
@@ -225,7 +225,7 @@ function SortableField({
           <Trash2 className="h-3.5 w-3.5" />
         </button>
       </div>
-      <div className="px-8 py-6">
+      <div className="px-4 py-5 sm:px-8 sm:py-6">
         {field.type === "text-editor" ? (
           <TiptapEditor
             content={field.textEditorSettings?.content ?? ""}
@@ -496,7 +496,7 @@ function FormAuthorPage({
           Back To Insight Capture
         </Link>
 
-        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               {title.trim() || "Untitled Form"}
@@ -504,10 +504,10 @@ function FormAuthorPage({
             <p className="mt-1 text-sm text-muted-foreground">Draft</p>
           </div>
 
-          <div className="flex items-center gap-3 pt-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end sm:gap-3 sm:pt-1 sm:flex-nowrap">
             {/* Save status indicator */}
             {saveLabel && (
-              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="flex w-full items-center justify-center gap-1.5 text-xs text-muted-foreground sm:w-auto sm:justify-start">
                 {saveStatus === "saving" ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
                 ) : (
@@ -525,7 +525,7 @@ function FormAuthorPage({
               <CalendarClock />
               Schedule
             </Button>
-            <Button size="lg" disabled={!canPublish} onClick={handlePublish}>
+            <Button size="sm" disabled={!canPublish} onClick={handlePublish}>
               <Send />
               Publish
             </Button>
@@ -534,7 +534,7 @@ function FormAuthorPage({
       </div>
 
       {/* Card */}
-      <div className="rounded-xl bg-white border border-border shadow-sm p-8">
+      <div className="rounded-xl bg-white border border-border shadow-sm p-4 sm:p-8">
         <div className="flex flex-col gap-6">
           {/* Form name, category, and audience on one row (stacks on small screens) */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-start">

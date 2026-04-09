@@ -19,13 +19,8 @@ export function MainShell({ children }: { children: React.ReactNode }) {
 
   return (
     <main
-      className="flex-1"
-      style={{
-        maxWidth: 1200,
-        width: "100%",
-        margin: "0 auto",
-        padding: "40px 32px",
-      }}
+      className="flex-1 w-full mx-auto px-4 py-8 sm:px-8 sm:py-10"
+      style={{ maxWidth: 1200 }}
     >
       {children}
     </main>

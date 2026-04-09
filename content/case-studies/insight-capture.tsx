@@ -8,7 +8,7 @@ export const insightCapture: CaseStudyContent = {
       "A flexible system for digitizing school data collection, enabling faster reporting, reduced manual work, and more reliable insights.",
   },
   hero: {
-    eyebrow: "CASE STUDY · DATA PLATFORM",
+    eyebrow: "CASE STUDY · INSIGHT CAPTURE",
     title: (
       <>
         <span className="h1-product">Insight Capture</span>: Turning fragmented
