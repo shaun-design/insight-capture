@@ -61,15 +61,17 @@ Any other Clerk vars are SDK-only; add them only if you follow a Clerk guide tha
 
 ## `proxy.ts` behavior
 
-- If **either** `CLERK_SECRET_KEY` or `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is missing or blank, the proxy calls `NextResponse.next()` and **does not** run `clerkMiddleware` (avoids the previous production 500 when secrets were missing).
-- If both are set, `clerkMiddleware` runs and **`auth.protect()`** applies only to paths matched by:
+- If `CLERK_SECRET_KEY` is missing or blank, the proxy calls `NextResponse.next()` and **does not** run `clerkMiddleware` (avoids hard failures when the secret is not set). The gate uses the secret only so it matches server/runtime behavior; `NEXT_PUBLIC_*` is build-inlined and must still be set for the browser/Clerk UI.
+- If the secret is set, `clerkMiddleware` runs and **`auth.protect()`** applies only to paths matched by:
   - `/admin` and subpaths
   - `/coach` and subpaths
   - `/forms` and subpaths
 
+**Layouts** under those segments call `enforceAppSegmentAuth()` (`connection()` + `auth.protect()` when the secret exists) so enforcement happens on real requests.
+
 **Public without sign-in** (marketing / case study): `/`, `/case-studies`, `/case-studies/*`, `/case-study`, `/sign-in`, `/sign-up`, and any other path not under the three prefixes above.
 
-**When Clerk is not configured:** `/admin`, `/coach`, and `/forms` are **not** protected (same as no proxy).
+**When the secret is not set:** `/admin`, `/coach`, and `/forms` are **not** protected at the edge or in layouts.
 
 ## Disable / re-enable the edge proxy
 
