@@ -1,6 +1,7 @@
 import type { CaseStudyContent, CarouselSlide } from "@/lib/case-studies/types";
 import { ResearchThemesSection } from "@/components/case-study/research-themes";
 import { PlanTradeoffsSection } from "@/components/case-study/plan-tradeoffs-section";
+import { ResultsMetricsDashboard } from "@/components/case-study/results-metrics-dashboard";
 
 const insightProductCarouselSlides: CarouselSlide[] = [
   {
@@ -30,6 +31,30 @@ const insightProductCarouselSlides: CarouselSlide[] = [
     title: "See What's Happening Across Your Organization",
     description:
       "Track form usage, completion, and status in one dashboard so leaders can monitor progress and make informed decisions.",
+  },
+];
+
+const insightWhatWeBuiltCarouselSlides: CarouselSlide[] = [
+  {
+    image: "/screenshots/c6-ui.png",
+    alt: "Radio set field with single selection and configurable options and layout",
+    title: "Radio Set",
+    description:
+      "Example of a single selection input with configurable options and layout.",
+  },
+  {
+    image: "/screenshots/c7-ui.png",
+    alt: "Checkbox set field with multi selection and configurable options and layout",
+    title: "Checkbox Set",
+    description:
+      "Example of a multi selection input with configurable options and layout.",
+  },
+  {
+    image: "/screenshots/c8-ui.png",
+    alt: "Rich text editor and date picker input components in the form builder",
+    title: "Text Editor and Date Picker",
+    description:
+      "Examples of input components for entering formatted text and selecting dates.",
   },
 ];
 
@@ -232,7 +257,7 @@ export const insightCapture: CaseStudyContent = {
       kicker: "What We Built",
       tocLabel: "What We Built",
       variant: "alt",
-      carouselAfter: insightProductCarouselSlides,
+      carouselAfter: insightWhatWeBuiltCarouselSlides,
       content: (
         <div className="prose">
           <p>
@@ -269,8 +294,9 @@ export const insightCapture: CaseStudyContent = {
       tocLabel: "Results",
       variant: "default",
       content: (
-        <div className="prose">
-          <ul className="results-list">
+        <>
+          <ResultsMetricsDashboard />
+          <ul className="key-outcomes">
             <li>Centralized data collection across the organization</li>
             <li>Reduced manual data entry and human error</li>
             <li>Faster reporting with higher confidence in the data</li>
@@ -279,7 +305,7 @@ export const insightCapture: CaseStudyContent = {
             <li>Reduced delays between data capture and insight</li>
             <li>Increased adoption due to simplicity and flexibility</li>
           </ul>
-        </div>
+        </>
       ),
     },
     {

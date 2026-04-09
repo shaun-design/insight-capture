@@ -5,7 +5,6 @@ import { CalendarIcon } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -101,24 +100,18 @@ export function DateFieldEditor({
                 <div className="flex flex-col gap-4">
                   <p className="text-sm font-semibold text-foreground">Settings</p>
 
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-foreground/70">Required to Complete?</span>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <Switch checked={settings.required} onCheckedChange={(v) => set("required", v)} />
-                      <span className="text-sm text-foreground">Required</span>
-                    </div>
-                  </div>
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <Switch checked={settings.required} onCheckedChange={(v) => set("required", v)} />
+                    <span className="text-sm text-foreground">Required to complete</span>
+                  </label>
 
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-foreground/70">Comments</span>
-                    <label className="flex shrink-0 items-center gap-2 cursor-pointer">
-                      <Checkbox
-                        checked={settings.commentsEnabled}
-                        onCheckedChange={(v) => set("commentsEnabled", !!v)}
-                      />
-                      <span className="text-sm text-foreground">Comments Enabled</span>
-                    </label>
-                  </div>
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <Switch
+                      checked={settings.commentsEnabled}
+                      onCheckedChange={(v) => set("commentsEnabled", v)}
+                    />
+                    <span className="text-sm text-foreground">Enable comments</span>
+                  </label>
                 </div>
               </div>
             </div>
