@@ -125,20 +125,13 @@ export function AppNav() {
             <p className="mb-2 px-1 text-xs font-semibold tracking-wide text-neutral-500">
               Account
             </p>
-            <Link
-              href="/prototype-login"
-              onClick={() => setMenuOpen(false)}
-              className="mb-2 block w-full rounded-xl bg-primary px-4 py-3 text-left text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Sign In
-            </Link>
-            <Link
+            <a
               href="/api/prototype-auth/logout"
               onClick={() => setMenuOpen(false)}
               className="block w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-left text-base font-medium text-neutral-800 transition-colors hover:bg-neutral-50"
             >
               Log Out
-            </Link>
+            </a>
           </div>
         </div>
       </>

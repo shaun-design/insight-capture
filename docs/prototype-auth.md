@@ -1,6 +1,11 @@
 # Prototype auth (shared password)
 
-Protected routes: `/admin`, `/coach`, `/forms` (via `proxy.ts`).
+**All app routes** require a valid session cookie except:
+
+- `/prototype-login` (and its RSC sub-requests)
+- `/api/prototype-auth/*` (e.g. logout)
+
+Static assets and `/_next/*` are excluded by the proxy matcher (see `proxy.ts`).
 
 ## Environment variables
 

@@ -2,6 +2,20 @@ import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 
 export const PROTOTYPE_AUTH_COOKIE = "prototype_demo_auth";
 
+/** Request header set by `proxy.ts` so the root layout can enforce the same session rules. */
+export const PROTOTYPE_INVOKE_HEADER = "x-middleware-invoke";
+
+/** Paths that skip prototype session checks (proxy + server layout). */
+export function isPrototypePublicPath(pathname: string): boolean {
+  if (pathname === "/prototype-login" || pathname.startsWith("/prototype-login/")) {
+    return true;
+  }
+  if (pathname.startsWith("/api/prototype-auth/")) {
+    return true;
+  }
+  return false;
+}
+
 export function isPrototypeAuthConfigured(): boolean {
   return Boolean(
     process.env["PROTOTYPE_AUTH_USER"]?.trim() &&
@@ -52,8 +66,25 @@ export function constantTimeEqual(a: string, b: string): boolean {
 
 /** Prevent open redirects after login. */
 export function safePrototypeNextParam(next: string | null | undefined): string {
-  if (!next || typeof next !== "string") return "/admin";
+  if (!next || typeof next !== "string") return "/";
   const t = next.trim();
-  if (!t.startsWith("/") || t.startsWith("//")) return "/admin";
+  if (!t.startsWith("/") || t.startsWith("//")) return "/";
   return t;
+}
+
+/**
+ * Path to the prototype login page. Omits `next` when the return path is `/`
+ * so URLs stay `…/prototype-login` instead of `…/prototype-login?next=%2F`.
+ */
+export function prototypeLoginHref(
+  next?: string | null,
+  error?: "1" | "config",
+): string {
+  const q = new URLSearchParams();
+  if (error === "1") q.set("error", "1");
+  if (error === "config") q.set("error", "config");
+  const safe = safePrototypeNextParam(next ?? "/");
+  if (safe !== "/") q.set("next", safe);
+  const qs = q.toString();
+  return qs ? `/prototype-login?${qs}` : "/prototype-login";
 }

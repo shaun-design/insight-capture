@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 
-export function AppFooter() {
+type AppFooterProps = {
+  /** When false, hides the Help link (e.g. prototype sign-in). */
+  showHelp?: boolean;
+};
+
+export function AppFooter({ showHelp = true }: AppFooterProps) {
   return (
     <footer
       style={{
@@ -18,7 +23,7 @@ export function AppFooter() {
           padding: "20px 32px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: showHelp ? "space-between" : "flex-start",
           gap: 16,
           flexWrap: "wrap",
         }}
@@ -26,13 +31,15 @@ export function AppFooter() {
         <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>
           © {new Date().getFullYear()} Shaun Herron. All rights reserved.
         </p>
-        <Link
-          href="#"
-          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          style={{ textDecoration: "none" }}
-        >
-          Help
-        </Link>
+        {showHelp && (
+          <Link
+            href="#"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            style={{ textDecoration: "none" }}
+          >
+            Help
+          </Link>
+        )}
       </div>
     </footer>
   );

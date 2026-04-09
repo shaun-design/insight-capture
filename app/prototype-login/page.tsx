@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { prototypeLoginAction } from "./actions";
+import { PrototypeLoginCanonicalUrl } from "./canonical-url";
+import { PrototypeLoginPasswordField } from "./password-field";
 
 type Props = {
   searchParams?: Promise<{ next?: string; error?: string }>;
@@ -9,18 +10,15 @@ export default async function PrototypeLoginPage({ searchParams }: Props) {
   const sp = (await searchParams) ?? {};
   const next = sp.next && !sp.next.startsWith("//") && sp.next.startsWith("/")
     ? sp.next
-    : "/admin";
+    : "/";
   const err = sp.error;
 
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-16">
-      <h1 className="mb-2 text-xl font-semibold text-neutral-900">
-        Prototype sign-in
+      <PrototypeLoginCanonicalUrl />
+      <h1 className="mb-6 text-xl font-semibold text-neutral-900">
+        Sign in to view the full case study
       </h1>
-      <p className="mb-6 text-sm text-neutral-600">
-        Shared credentials for admin, coach, and forms demos. Not for production
-        use.
-      </p>
 
       {err === "1" && (
         <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
@@ -47,13 +45,7 @@ export default async function PrototypeLoginPage({ searchParams }: Props) {
         </label>
         <label className="flex flex-col gap-1 text-sm">
           <span className="font-medium text-neutral-700">Password</span>
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 outline-none focus:border-[#0a6ab1] focus:ring-1 focus:ring-[#0a6ab1]"
-          />
+          <PrototypeLoginPasswordField />
         </label>
         <button
           type="submit"
@@ -62,12 +54,6 @@ export default async function PrototypeLoginPage({ searchParams }: Props) {
           Sign in
         </button>
       </form>
-
-      <p className="mt-8 text-center text-sm text-neutral-500">
-        <Link href="/" className="text-[#0a6ab1] underline-offset-2 hover:underline">
-          Back to case study
-        </Link>
-      </p>
     </main>
   );
 }

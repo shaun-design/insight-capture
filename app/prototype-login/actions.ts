@@ -6,13 +6,14 @@ import {
   PROTOTYPE_AUTH_COOKIE,
   constantTimeEqual,
   isPrototypeAuthConfigured,
+  prototypeLoginHref,
   safePrototypeNextParam,
   signPrototypeSession,
 } from "@/lib/prototype-auth";
 
 export async function prototypeLoginAction(formData: FormData) {
   if (!isPrototypeAuthConfigured()) {
-    redirect("/prototype-login?error=config");
+    redirect(prototypeLoginHref(undefined, "config"));
   }
 
   const user = String(formData.get("user") ?? "");
@@ -24,7 +25,7 @@ export async function prototypeLoginAction(formData: FormData) {
   const secret = process.env["PROTOTYPE_AUTH_SECRET"]!.trim();
 
   if (!constantTimeEqual(user, eu) || !constantTimeEqual(password, ep)) {
-    redirect(`/prototype-login?error=1&next=${encodeURIComponent(next)}`);
+    redirect(prototypeLoginHref(next, "1"));
   }
 
   const token = signPrototypeSession(secret);

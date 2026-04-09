@@ -2,33 +2,56 @@ import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
 import {
   PROTOTYPE_AUTH_COOKIE,
+  PROTOTYPE_INVOKE_HEADER,
   isPrototypeAuthConfigured,
+  isPrototypePublicPath,
+  prototypeLoginHref,
+  safePrototypeNextParam,
   verifyPrototypeSession,
 } from "@/lib/prototype-auth";
 
-function isProtectedPath(pathname: string): boolean {
-  return (
-    pathname === "/admin" ||
-    pathname.startsWith("/admin/") ||
-    pathname === "/coach" ||
-    pathname.startsWith("/coach/") ||
-    pathname === "/forms" ||
-    pathname.startsWith("/forms/")
+function nextWithInvoke(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(
+    PROTOTYPE_INVOKE_HEADER,
+    `${request.nextUrl.pathname}${request.nextUrl.search}`,
   );
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export default function proxy(request: NextRequest, _event: NextFetchEvent) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/sign-in" || pathname.startsWith("/sign-in/")) {
-    const u = new URL("/prototype-login", request.url);
     const q = request.nextUrl.searchParams.get("redirect_url");
-    if (q) u.searchParams.set("next", q);
-    return NextResponse.redirect(u);
+    return NextResponse.redirect(
+      new URL(prototypeLoginHref(q ?? undefined), request.url),
+    );
   }
 
-  if (!isProtectedPath(pathname)) {
-    return NextResponse.next();
+  if (isPrototypePublicPath(pathname)) {
+    const onLogin =
+      pathname === "/prototype-login" ||
+      pathname.startsWith("/prototype-login/");
+    const rawNext = request.nextUrl.searchParams.get("next");
+    const flight =
+      request.headers.get("rsc") === "1" ||
+      request.headers.has("next-router-prefetch") ||
+      request.nextUrl.searchParams.has("_rsc");
+    if (
+      onLogin &&
+      rawNext !== null &&
+      safePrototypeNextParam(rawNext) === "/" &&
+      !flight
+    ) {
+      const errParam = request.nextUrl.searchParams.get("error");
+      const err =
+        errParam === "1" ? "1" : errParam === "config" ? "config" : undefined;
+      return NextResponse.redirect(
+        new URL(prototypeLoginHref(undefined, err), request.url),
+      );
+    }
+    return nextWithInvoke(request);
   }
 
   if (!isPrototypeAuthConfigured()) {
@@ -41,15 +64,15 @@ export default function proxy(request: NextRequest, _event: NextFetchEvent) {
   const secret = process.env["PROTOTYPE_AUTH_SECRET"]!.trim();
   const token = request.cookies.get(PROTOTYPE_AUTH_COOKIE)?.value;
   if (!verifyPrototypeSession(token, secret)) {
-    const login = new URL("/prototype-login", request.url);
-    login.searchParams.set(
-      "next",
-      `${pathname}${request.nextUrl.search}`,
+    return NextResponse.redirect(
+      new URL(
+        prototypeLoginHref(`${pathname}${request.nextUrl.search}`),
+        request.url,
+      ),
     );
-    return NextResponse.redirect(login);
   }
 
-  return NextResponse.next();
+  return nextWithInvoke(request);
 }
 
 export const config = {
