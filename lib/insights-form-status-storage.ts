@@ -6,8 +6,7 @@ export type InsightsFormStatus =
   | "Draft"
   | "Published"
   | "Archived"
-  | "Scheduled"
-  | "Closed";
+  | "Scheduled";
 
 export const INSIGHTS_FORM_STATUS_OVERRIDES_KEY = "insights-form-status-overrides";
 export const INSIGHTS_FORM_STATUS_OVERRIDES_EVENT = "insights-form-status-overrides-changed";
