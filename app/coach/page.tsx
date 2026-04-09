@@ -208,24 +208,14 @@ export default function CoachDemoPage() {
         <div className="h-2 sm:h-4" />
 
         <div className="overflow-x-auto">
-          <Table className="w-full table-fixed">
+          <Table className="w-full min-w-[540px] table-auto">
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40">
-                <TableHead className="py-4 font-semibold text-foreground">
-                  Form name
-                </TableHead>
-                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
-                  Category
-                </TableHead>
-                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
-                  About
-                </TableHead>
-                <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
-                  Completed
-                </TableHead>
-                <TableHead className="w-28 py-4 font-semibold text-foreground">
-                  Status
-                </TableHead>
+                <TableHead className="py-4 font-semibold text-foreground">Form name</TableHead>
+                <TableHead className="py-4 font-semibold text-foreground">Category</TableHead>
+                <TableHead className="py-4 font-semibold text-foreground">About</TableHead>
+                <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">Completed</TableHead>
+                <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">Status</TableHead>
                 <TableHead className="w-10 py-4" />
               </TableRow>
             </TableHeader>
@@ -241,25 +231,16 @@ export default function CoachDemoPage() {
               )}
               {paginated.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell className="overflow-hidden py-4 align-middle font-medium text-foreground">
-                    <span className="block truncate" title={row.formName}>
-                      {row.formName}
-                    </span>
-                    <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
-                      {row.category} · {row.about} · {row.completedAt}
-                    </span>
+                  <TableCell className="py-4 align-middle font-medium text-foreground">
+                    {row.formName}
                   </TableCell>
-                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                    <span className="block truncate" title={row.category}>
-                      {row.category}
-                    </span>
+                  <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                    {row.category}
                   </TableCell>
-                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                    <span className="block truncate" title={row.about}>
-                      {row.about}
-                    </span>
+                  <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                    {row.about}
                   </TableCell>
-                  <TableCell className="hidden w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
+                  <TableCell className="w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground">
                     {row.completedAt}
                   </TableCell>
                   <TableCell className="py-4 align-middle whitespace-nowrap">

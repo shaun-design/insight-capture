@@ -17,6 +17,7 @@ import {
   readCoachCompletionsRaw,
   deleteCoachCompletion,
   COACH_COMPLETIONS_CHANGED_EVENT,
+  type StoredCoachCompletionRow,
 } from "@/lib/coach-completions-storage";
 import {
   INSTRUCTIONAL_WALKTHROUGH_FORM_ID,
@@ -457,6 +458,69 @@ function ActionsMenu({
   );
 }
 
+const ADMIN_SEED_COMPLETIONS: StoredCoachCompletionRow[] = [
+  {
+    id: "seed-a1",
+    templateId: "classroom-observation",
+    formName: "Classroom Observation",
+    category: "Classroom Observations",
+    about: "Maya Johnson",
+    completedAtIso: "2026-04-07T15:00:00.000Z",
+    status: "Submitted",
+    completedBy: "James Carter",
+  },
+  {
+    id: "seed-a2",
+    templateId: "coaching-check-in",
+    formName: "Coaching Session Notes",
+    category: "Coaching",
+    about: "Carlos Rivera",
+    completedAtIso: "2026-04-05T10:30:00.000Z",
+    status: "Submitted",
+    completedBy: "Maria Gonzalez",
+  },
+  {
+    id: "seed-a3",
+    templateId: "behavior-incident",
+    formName: "Student Behavior Log",
+    category: "Behavior Tracking",
+    about: "Emma Chen",
+    completedAtIso: "2026-04-03T14:00:00.000Z",
+    status: "Submitted",
+    completedBy: "James Carter",
+  },
+  {
+    id: "seed-a4",
+    templateId: "classroom-observation",
+    formName: "Classroom Observation",
+    category: "Classroom Observations",
+    about: "Liam Thompson",
+    completedAtIso: "2026-04-01T09:00:00.000Z",
+    status: "Submitted",
+    completedBy: "Sarah Mitchell",
+  },
+  {
+    id: "seed-a5",
+    templateId: "behavior-incident",
+    formName: "Student Behavior Log",
+    category: "Behavior Tracking",
+    about: "Sofia Patel",
+    completedAtIso: "2026-03-28T11:00:00.000Z",
+    status: "Submitted",
+    completedBy: "Maria Gonzalez",
+  },
+  {
+    id: "seed-a6",
+    templateId: "coaching-check-in",
+    formName: "Coaching Session Notes",
+    category: "Coaching",
+    about: "Noah Williams",
+    completedAtIso: "2026-03-22T13:30:00.000Z",
+    status: "Submitted",
+    completedBy: "James Carter",
+  },
+];
+
 export default function DataFormsPage() {
   const [forms, setForms] = useState<DataForm[]>(initialForms);
   const [responseDeltas, setResponseDeltas] = useState<Record<string, number>>({});
@@ -480,6 +544,7 @@ export default function DataFormsPage() {
   const [completionsSearch, setCompletionsSearch] = useState("");
   const [completionsPage, setCompletionsPage] = useState(1);
   const [completionsSync, setCompletionsSync] = useState(0);
+  const [hiddenCompletionIds, setHiddenCompletionIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     function syncFormsFromStatusOverrides() {
@@ -572,11 +637,14 @@ export default function DataFormsPage() {
   const lastItem = Math.min(safePage * pageSize, filtered.length);
 
   const completionsSorted = useMemo(() => {
-    const rows = readCoachCompletionsRaw();
-    return rows.sort(
-      (a, b) => new Date(b.completedAtIso).getTime() - new Date(a.completedAtIso).getTime()
-    );
-  }, [completionsSync]);
+    const fromStorage = readCoachCompletionsRaw();
+    const byId = new Map<string, StoredCoachCompletionRow>();
+    for (const r of ADMIN_SEED_COMPLETIONS) byId.set(r.id, r);
+    for (const r of fromStorage) byId.set(r.id, r);
+    return Array.from(byId.values())
+      .filter((r) => !hiddenCompletionIds.has(r.id))
+      .sort((a, b) => new Date(b.completedAtIso).getTime() - new Date(a.completedAtIso).getTime());
+  }, [completionsSync, hiddenCompletionIds]);
 
   const completionsFiltered = useMemo(() => {
     const q = completionsSearch.toLowerCase().trim();
@@ -819,14 +887,14 @@ export default function DataFormsPage() {
 
         {/* Table */}
         <div className="overflow-x-auto">
-        <Table className="w-full table-fixed">
+        <Table className="w-full min-w-[640px] table-auto">
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">
               <TableHead className="py-4 font-semibold text-foreground">
                 Form Name
               </TableHead>
               {visibleColumns.category && (
-                <TableHead className="hidden w-[12%] min-w-[6rem] max-w-[11rem] py-4 font-semibold text-foreground sm:table-cell">
+                <TableHead className="py-4 font-semibold text-foreground">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-semibold text-foreground hover:text-primary transition-colors">
                       Category
@@ -846,7 +914,7 @@ export default function DataFormsPage() {
                 </TableHead>
               )}
               {visibleColumns.owner && (
-                <TableHead className="hidden w-[14%] min-w-[7rem] max-w-[11rem] py-4 font-semibold text-foreground sm:table-cell">
+                <TableHead className="py-4 font-semibold text-foreground">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-semibold text-foreground hover:text-primary transition-colors">
                       Owner
@@ -866,20 +934,20 @@ export default function DataFormsPage() {
                 </TableHead>
               )}
               {visibleColumns.lastUpdated && (
-                <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
+                <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">
                   Last Updated
                 </TableHead>
               )}
               {visibleColumns.status && (
-                <TableHead className="w-28 py-4 font-semibold text-foreground">Status</TableHead>
+                <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">Status</TableHead>
               )}
               {visibleColumns.responses && (
-                <TableHead className="hidden w-[5.5rem] py-4 text-right font-semibold text-foreground sm:table-cell">
+                <TableHead className="w-[5.5rem] py-4 text-right font-semibold text-foreground">
                   Responses
                 </TableHead>
               )}
               {visibleColumns.assignedTo && (
-                <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
+                <TableHead className="w-[10rem] py-4 font-semibold text-foreground">
                   Assigned To
                 </TableHead>
               )}
@@ -918,24 +986,19 @@ export default function DataFormsPage() {
                       <span className="block truncate">{form.name}</span>
                     </span>
                   )}
-                  <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
-                    {[form.owner, form.lastUpdated].filter(Boolean).join(" · ")}
-                  </span>
                 </TableCell>
                 {visibleColumns.category && (
-                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                    <span className="block truncate" title={form.purpose}>
-                      {form.purpose}
-                    </span>
+                  <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                    {form.purpose}
                   </TableCell>
                 )}
                 {visibleColumns.owner && (
-                  <TableCell className="hidden min-w-0 py-4 align-middle sm:table-cell">
+                  <TableCell className="py-4 align-middle">
                     <OwnerAvatar name={form.owner} />
                   </TableCell>
                 )}
                 {visibleColumns.lastUpdated && (
-                  <TableCell className="hidden w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
+                  <TableCell className="w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground">
                     {form.lastUpdated}
                   </TableCell>
                 )}
@@ -945,7 +1008,7 @@ export default function DataFormsPage() {
                   </TableCell>
                 )}
                 {visibleColumns.responses && (
-                  <TableCell className="hidden w-[5.5rem] py-4 text-right align-middle whitespace-nowrap text-sm text-muted-foreground sm:table-cell">
+                  <TableCell className="w-[5.5rem] py-4 text-right align-middle whitespace-nowrap text-sm text-muted-foreground">
                     {form.responses > 0 ? (
                       form.responses.toLocaleString()
                     ) : (
@@ -954,10 +1017,8 @@ export default function DataFormsPage() {
                   </TableCell>
                 )}
                 {visibleColumns.assignedTo && (
-                  <TableCell className="hidden min-w-0 py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                    <span className="block truncate" title={form.assignedTo}>
-                      {form.assignedTo}
-                    </span>
+                  <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                    {form.assignedTo}
                   </TableCell>
                 )}
                 <TableCell className="w-12 py-4 align-middle">
@@ -1051,27 +1112,15 @@ export default function DataFormsPage() {
           <div className="h-4" />
 
           <div className="overflow-x-auto">
-            <Table className="w-full table-fixed">
+            <Table className="w-full min-w-[600px] table-auto">
               <TableHeader>
                 <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="py-4 font-semibold text-foreground">
-                    Form name
-                  </TableHead>
-                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
-                    Category
-                  </TableHead>
-                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
-                    About
-                  </TableHead>
-                  <TableHead className="hidden py-4 font-semibold text-foreground sm:table-cell">
-                    Completed by
-                  </TableHead>
-                  <TableHead className="hidden w-[7.5rem] py-4 font-semibold text-foreground sm:table-cell">
-                    Completed
-                  </TableHead>
-                  <TableHead className="w-28 py-4 font-semibold text-foreground">
-                    Status
-                  </TableHead>
+                  <TableHead className="py-4 font-semibold text-foreground">Form name</TableHead>
+                  <TableHead className="py-4 font-semibold text-foreground">Category</TableHead>
+                  <TableHead className="py-4 font-semibold text-foreground">About</TableHead>
+                  <TableHead className="py-4 font-semibold text-foreground">Completed by</TableHead>
+                  <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">Completed</TableHead>
+                  <TableHead className="w-[7.5rem] py-4 font-semibold text-foreground">Status</TableHead>
                   <TableHead className="w-10 py-4" />
                 </TableRow>
               </TableHeader>
@@ -1087,30 +1136,19 @@ export default function DataFormsPage() {
                 )}
                 {completionsPaginated.map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell className="overflow-hidden py-4 align-middle font-medium text-foreground">
-                      <span className="block truncate" title={row.formName}>
-                        {row.formName}
-                      </span>
-                      <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
-                        {row.category} · {row.completedBy} · {new Date(row.completedAtIso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </span>
+                    <TableCell className="py-4 align-middle font-medium text-foreground">
+                      {row.formName}
                     </TableCell>
-                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                      <span className="block truncate" title={row.category}>
-                        {row.category}
-                      </span>
+                    <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                      {row.category}
                     </TableCell>
-                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                      <span className="block truncate" title={row.about}>
-                        {row.about}
-                      </span>
+                    <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                      {row.about}
                     </TableCell>
-                    <TableCell className="hidden overflow-hidden py-4 align-middle text-sm text-muted-foreground sm:table-cell">
-                      <span className="block truncate" title={row.completedBy}>
-                        {row.completedBy}
-                      </span>
+                    <TableCell className="py-4 align-middle text-sm text-muted-foreground">
+                      {row.completedBy}
                     </TableCell>
-                    <TableCell className="hidden w-[7.5rem] py-4 align-middle text-sm text-muted-foreground sm:table-cell">
+                    <TableCell className="w-[7.5rem] py-4 align-middle whitespace-nowrap text-sm text-muted-foreground">
                       {new Date(row.completedAtIso).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -1135,8 +1173,13 @@ export default function DataFormsPage() {
                           <DropdownMenuItem
                             className="text-destructive focus:text-destructive"
                             onClick={() => {
-                              deleteCoachCompletion(row.id);
-                              setCompletionsSync((n) => n + 1);
+                              const inStorage = readCoachCompletionsRaw().some((r) => r.id === row.id);
+                              if (inStorage) {
+                                deleteCoachCompletion(row.id);
+                                setCompletionsSync((n) => n + 1);
+                              } else {
+                                setHiddenCompletionIds((prev) => new Set([...prev, row.id]));
+                              }
                             }}
                           >
                             <Trash2 className="mr-2 h-4 w-4" />
