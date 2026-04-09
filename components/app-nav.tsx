@@ -1,6 +1,5 @@
 "use client";
 
-import { Show, SignInButton, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,7 +32,6 @@ function linkActive(pathname: string, href: string) {
 
 export function AppNav() {
   const pathname = usePathname();
-  const { signOut } = useClerk();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -127,29 +125,20 @@ export function AppNav() {
             <p className="mb-2 px-1 text-xs font-semibold tracking-wide text-neutral-500">
               Account
             </p>
-            <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  onClick={() => setMenuOpen(false)}
-                  className="w-full rounded-xl bg-primary px-4 py-3 text-left text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Sign In
-                </button>
-              </SignInButton>
-            </Show>
-            <Show when="signed-in">
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  void signOut({ redirectUrl: "/" });
-                }}
-                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-left text-base font-medium text-neutral-800 transition-colors hover:bg-neutral-50"
-              >
-                Log Out
-              </button>
-            </Show>
+            <Link
+              href="/prototype-login"
+              onClick={() => setMenuOpen(false)}
+              className="mb-2 block w-full rounded-xl bg-primary px-4 py-3 text-left text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/api/prototype-auth/logout"
+              onClick={() => setMenuOpen(false)}
+              className="block w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-left text-base font-medium text-neutral-800 transition-colors hover:bg-neutral-50"
+            >
+              Log Out
+            </Link>
           </div>
         </div>
       </>
