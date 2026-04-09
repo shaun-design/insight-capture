@@ -12,6 +12,8 @@ export type CaseStudySection = {
   tocLabel: string;
   variant?: "default" | "alt";
   content: ReactNode;
+  /** Renders a ProtoCarousel after the section body (same pattern as overview carousel). */
+  carouselAfter?: CarouselSlide[];
 };
 
 export type CaseStudyTopNav = {
@@ -19,6 +21,13 @@ export type CaseStudyTopNav = {
   brandHref?: string;
   authorName: string;
   authorLinkedInUrl: string;
+};
+
+export type CarouselSlide = {
+  image: string;
+  alt: string;
+  title: string;
+  description: string;
 };
 
 export type CaseStudyContent = {
@@ -35,6 +44,8 @@ export type CaseStudyContent = {
     leads: string[];
   };
   outcomes: CaseStudyOutcome[];
+  /** Slides rendered in a carousel between the hero and the first section. */
+  overviewCarousel?: CarouselSlide[];
   sections: CaseStudySection[];
   footer: {
     title: string;

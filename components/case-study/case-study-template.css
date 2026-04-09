@@ -212,6 +212,228 @@
   .current-findings li { margin-bottom: 10px; }
   .current-findings li:last-child { margin-bottom: 0; }
   .sec-lead { font-size: 16px; color: var(--muted); max-width: 680px; line-height: 1.65; margin-bottom: 20px; }
+  /* Users & research: theme cards by role */
+  .research-themes { margin-top: 36px; max-width: none; width: 100%; }
+  .research-themes-lead {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 42rem;
+    margin-bottom: 32px;
+  }
+  .research-themes-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: stretch;
+  }
+  .research-themes-block {
+    min-width: 0;
+    padding: 28px 24px 32px 22px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    box-shadow: var(--shadow-card);
+  }
+  .research-themes-block--admin {
+    border-left-color: var(--brand);
+  }
+  .research-themes-block--coach {
+    margin-top: 72px;
+    /* Warm amber: reads clearly apart from admin brand blue */
+    border-left-color: #c2410c;
+  }
+  .research-role-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .research-role-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .research-role-badge--admin {
+    background: rgba(38, 81, 166, 0.12);
+    border-color: var(--brand-line);
+    color: var(--brand-deep);
+  }
+  .research-role-badge--coach {
+    background: rgba(194, 65, 12, 0.12);
+    border-color: rgba(194, 65, 12, 0.38);
+    color: #9a3412;
+  }
+  .research-role-badge--shared {
+    background: rgba(47, 143, 110, 0.14);
+    border-color: rgba(47, 143, 110, 0.4);
+    color: #1f5f4a;
+  }
+  /* Section-level heading: clearly above card titles (type scale); same family as rest of case study */
+  .research-role-title {
+    font-size: clamp(1.5rem, 2.2vw + 0.5rem, 1.875rem);
+    font-weight: 700;
+    color: var(--text-hi);
+    margin: 0;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .research-role-sub {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 28px;
+    max-width: 40rem;
+  }
+  .research-theme-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .research-theme-card {
+    padding: 20px 20px 18px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0, 90, 108, 0.05);
+  }
+  /* Card title: label scale below section heading (eyebrow pattern) */
+  .research-theme-card h4 {
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--brand-deep);
+    margin: 0 0 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .research-themes-block--coach .research-theme-card h4 {
+    color: #9a3412;
+  }
+  .research-theme-desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0 0 16px;
+    max-width: 52rem;
+  }
+  /* Custom bullets: survives Tailwind preflight list reset */
+  .research-bullets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .research-bullets li {
+    position: relative;
+    padding-left: 1.1em;
+    margin-bottom: 10px;
+  }
+  .research-bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand);
+  }
+  .research-themes-block--coach .research-bullets li::before {
+    background: #c2410c;
+  }
+  .research-bullets li:last-child { margin-bottom: 0; }
+  .research-bullets--shared {
+    font-size: 0.9375rem;
+  }
+  .research-bullets--shared li::before {
+    background: var(--green);
+  }
+  .research-shared {
+    margin-top: 48px;
+    padding: 26px 24px 24px 22px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    border-left: 4px solid var(--green);
+    max-width: 920px;
+    box-shadow: var(--shadow-card);
+  }
+  .research-shared .research-role-row {
+    margin-bottom: 12px;
+  }
+  .research-shared-lead {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 18px;
+    max-width: 40rem;
+  }
+  /* Plan & tradeoffs: white cards aligned with research theme cards */
+  .plan-tradeoffs {
+    margin-top: 36px;
+    max-width: none;
+    width: 100%;
+  }
+  .plan-tradeoffs-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .plan-tradeoff-card {
+    padding: 20px 20px 20px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0, 90, 108, 0.05);
+  }
+  .plan-tradeoff-card__grid {
+    display: grid;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (min-width: 720px) {
+    .plan-tradeoff-card__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 32px;
+    }
+  }
+  .plan-tradeoff-col { min-width: 0; }
+  .plan-tradeoff-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  .plan-tradeoff-plan {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--text-hi);
+    line-height: 1.4;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .plan-tradeoff-text {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+    max-width: 36rem;
+  }
   /* Prototype screenshot carousel (Overview) */
   .proto-carousel {
     margin: 8px auto 28px;
@@ -223,7 +445,7 @@
     overflow: hidden;
     border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
-    background: #0d1f24;
+    background: var(--surface);
     position: relative;
   }
   /* Horizontal slide: track is 4× viewport width; each slide is 25% of track */
@@ -232,13 +454,16 @@
     touch-action: pan-y;
     -webkit-user-select: none;
     user-select: none;
+    background: var(--surface);
   }
   .proto-carousel-track {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     transform: translateX(0);
     transition: transform 0.45s cubic-bezier(0.25, 0.85, 0.3, 1);
     will-change: transform;
+    background: var(--surface);
   }
   .modal-overlay {
     position: fixed;
@@ -315,18 +540,24 @@
   @media (prefers-reduced-motion: reduce) {
     .proto-carousel-track { transition: none; }
   }
+  /* Track height follows the tallest slide. Caption stays content-sized; extra height
+     shows as the slide’s surface below the caption (not a stretched caption band). */
   .proto-carousel-slide {
     min-width: 0;
+    min-height: 0;
     display: flex;
     flex-direction: column;
+    background: var(--surface);
   }
   .proto-carousel-slide img {
     display: block;
     width: 100%;
     height: auto;
     pointer-events: none;
+    flex-shrink: 0;
   }
   .proto-carousel-caption {
+    flex: none;
     padding: 14px 16px 16px;
     background: var(--surface2);
     border-top: 1px solid var(--border);
@@ -343,24 +574,6 @@
     color: var(--muted);
     line-height: 1.55;
     margin: 0;
-  }
-  /* Design system: light screenshots + light viewport (no dark #0d1f24 bleed). */
-  #design-system-carousel .proto-carousel-viewport,
-  #design-system-carousel .proto-carousel-window,
-  #design-system-carousel .proto-carousel-track {
-    background: var(--surface);
-  }
-  /* Track height = tallest slide; shorter slides were leaving empty space below the caption
-     (white “bar”). Stretch the caption to fill the rest of the slide so the card is flush. */
-  #design-system-carousel .proto-carousel-slide {
-    background: var(--surface);
-    min-height: 0;
-  }
-  #design-system-carousel .proto-carousel-slide img {
-    flex-shrink: 0;
-  }
-  #design-system-carousel .proto-carousel-caption {
-    flex: 1 1 auto;
   }
   .proto-carousel-controls {
     display: flex;
@@ -425,6 +638,32 @@
   }
   .prose { font-size: 16px; color: var(--text); line-height: 1.75; max-width: 680px; }
   .prose p + p { margin-top: 14px; }
+  /* Results: visible bullets (preflight removes default list markers) */
+  .results-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 42rem;
+  }
+  .results-list li {
+    position: relative;
+    padding-left: 1.15em;
+    margin-bottom: 12px;
+  }
+  .results-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .results-list li:last-child { margin-bottom: 0; }
   .visual-design-block > .prose { max-width: 720px; }
 
   /* Project facts */

@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { CaseStudyContent } from "@/lib/case-studies/types";
 import { CaseStudyDocRail } from "./case-study-doc-rail";
 import { CaseStudyTopNav } from "./case-study-top-nav";
+import { ProtoCarousel } from "./proto-carousel";
 
 type Props = {
   data: CaseStudyContent;
@@ -59,6 +60,14 @@ export function CaseStudyTemplate({ data, showTopNav = false }: Props) {
         </div>
       </header>
 
+      {data.overviewCarousel && data.overviewCarousel.length > 0 && (
+        <div className="section alt">
+          <div className="container">
+            <ProtoCarousel slides={data.overviewCarousel} />
+          </div>
+        </div>
+      )}
+
       <main>
         {data.sections.map((s) => (
           <section
@@ -69,6 +78,9 @@ export function CaseStudyTemplate({ data, showTopNav = false }: Props) {
             <div className="container">
               <p className="sec-kicker">{s.kicker}</p>
               {s.content}
+              {s.carouselAfter && s.carouselAfter.length > 0 ? (
+                <ProtoCarousel slides={s.carouselAfter} />
+              ) : null}
             </div>
           </section>
         ))}

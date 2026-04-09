@@ -1,0 +1,159 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dce7f1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Page background -->
+  <rect width="1280" height="800" fill="url(#bg)"/>
+
+  <!-- Nav bar -->
+  <rect width="1280" height="56" fill="white"/>
+  <rect y="55" width="1280" height="1" fill="#e2e8f0"/>
+  <!-- Logo icon -->
+  <circle cx="30" cy="28" r="13" fill="#b91c1c"/>
+  <path d="M24 22 L30 28 L24 34 M30 22 L36 28 L30 34" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Brand name -->
+  <rect x="50" y="20" width="148" height="16" rx="3" fill="#1e293b"/>
+  <!-- Nav links right -->
+  <rect x="980" y="21" width="64" height="14" rx="3" fill="#e2e8f0"/>
+  <rect x="1056" y="21" width="64" height="14" rx="3" fill="#e2e8f0"/>
+  <circle cx="1200" cy="28" r="18" fill="#e2e8f0"/>
+  <circle cx="1247" cy="28" r="14" fill="#dbeafe"/>
+
+  <!-- Hero area -->
+  <!-- Heading left -->
+  <rect x="40" y="84" width="220" height="26" rx="5" fill="#1e293b"/>
+  <!-- Description text -->
+  <rect x="40" y="120" width="440" height="13" rx="3" fill="#94a3b8"/>
+  <rect x="40" y="139" width="380" height="13" rx="3" fill="#94a3b8"/>
+  <!-- Buttons right -->
+  <rect x="940" y="82" width="144" height="38" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="958" y="98" width="16" height="16" rx="3" fill="#94a3b8"/>
+  <rect x="982" y="101" width="88" height="10" rx="3" fill="#475569"/>
+  <rect x="1096" y="82" width="144" height="38" rx="8" fill="#2563eb"/>
+  <rect x="1114" y="98" width="16" height="16" rx="3" fill="rgba(255,255,255,0.5)"/>
+  <rect x="1138" y="101" width="80" height="10" rx="3" fill="white"/>
+  <!-- Video link -->
+  <rect x="40" y="162" width="14" height="14" rx="2" fill="#94a3b8"/>
+  <rect x="60" y="165" width="124" height="8" rx="3" fill="#94a3b8"/>
+
+  <!-- Main card -->
+  <rect x="32" y="192" width="1216" height="576" rx="12" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Tabs -->
+  <rect x="48" y="208" width="148" height="36" rx="0" fill="transparent"/>
+  <rect x="48" y="240" width="148" height="3" rx="1.5" fill="#2563eb"/>
+  <rect x="64" y="217" width="116" height="13" rx="3" fill="#1e293b"/>
+  <rect x="210" y="217" width="140" height="13" rx="3" fill="#94a3b8"/>
+  <rect x="48" y="243" width="1200" height="1" fill="#e2e8f0"/>
+
+  <!-- Toolbar -->
+  <rect x="48" y="258" width="280" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="64" y="272" width="14" height="14" rx="3" fill="#94a3b8"/>
+  <rect x="84" y="275" width="160" height="8" rx="3" fill="#cbd5e1"/>
+  <!-- Filter chips -->
+  <rect x="344" y="258" width="64" height="36" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <rect x="354" y="272" width="44" height="12" rx="3" fill="#2563eb"/>
+  <rect x="420" y="258" width="72" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="430" y="272" width="52" height="12" rx="3" fill="#64748b"/>
+  <rect x="504" y="258" width="72" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="514" y="272" width="52" height="12" rx="3" fill="#64748b"/>
+  <rect x="588" y="258" width="72" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="598" y="272" width="52" height="12" rx="3" fill="#64748b"/>
+  <!-- Right controls -->
+  <rect x="1048" y="258" width="36" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="1096" y="258" width="36" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="1144" y="258" width="120" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Table header row -->
+  <rect x="48" y="310" width="1200" height="44" fill="#f8fafc"/>
+  <rect x="64" y="324" width="130" height="12" rx="3" fill="#475569"/>
+  <rect x="300" y="324" width="80" height="12" rx="3" fill="#475569"/>
+  <rect x="500" y="324" width="60" height="12" rx="3" fill="#475569"/>
+  <rect x="680" y="324" width="80" height="12" rx="3" fill="#475569"/>
+  <rect x="860" y="324" width="60" height="12" rx="3" fill="#475569"/>
+  <rect x="1000" y="324" width="100" height="12" rx="3" fill="#475569"/>
+
+  <!-- Row 1  Classroom Observation, Published green -->
+  <rect x="48" y="354" width="1200" height="54" fill="white"/>
+  <rect x="48" y="407" width="1200" height="1" fill="#f1f5f9"/>
+  <rect x="64" y="370" width="190" height="13" rx="3" fill="#1e293b"/>
+  <rect x="64" y="388" width="120" height="10" rx="3" fill="#94a3b8"/>
+  <rect x="300" y="370" width="110" height="13" rx="3" fill="#64748b"/>
+  <rect x="500" y="370" width="80" height="13" rx="3" fill="#64748b"/>
+  <rect x="680" y="370" width="70" height="13" rx="3" fill="#64748b"/>
+  <rect x="856" y="364" width="92" height="26" rx="13" fill="#dcfce7"/>
+  <rect x="874" y="370" width="58" height="13" rx="3" fill="#166534"/>
+  <rect x="1000" y="370" width="130" height="13" rx="3" fill="#64748b"/>
+  <circle cx="1228" cy="381" r="3" fill="#94a3b8"/>
+  <circle cx="1238" cy="381" r="3" fill="#94a3b8"/>
+  <circle cx="1248" cy="381" r="3" fill="#94a3b8"/>
+
+  <!-- Row 2  Student Behavior Log, Published green -->
+  <rect x="48" y="408" width="1200" height="54" fill="white"/>
+  <rect x="48" y="461" width="1200" height="1" fill="#f1f5f9"/>
+  <rect x="64" y="424" width="165" height="13" rx="3" fill="#1e293b"/>
+  <rect x="64" y="442" width="100" height="10" rx="3" fill="#94a3b8"/>
+  <rect x="300" y="424" width="100" height="13" rx="3" fill="#64748b"/>
+  <rect x="500" y="424" width="70" height="13" rx="3" fill="#64748b"/>
+  <rect x="680" y="424" width="60" height="13" rx="3" fill="#64748b"/>
+  <rect x="856" y="418" width="92" height="26" rx="13" fill="#dcfce7"/>
+  <rect x="874" y="424" width="58" height="13" rx="3" fill="#166534"/>
+  <rect x="1000" y="424" width="140" height="13" rx="3" fill="#64748b"/>
+  <circle cx="1228" cy="435" r="3" fill="#94a3b8"/>
+  <circle cx="1238" cy="435" r="3" fill="#94a3b8"/>
+  <circle cx="1248" cy="435" r="3" fill="#94a3b8"/>
+
+  <!-- Row 3  Grant Reporting Form, Draft gray -->
+  <rect x="48" y="462" width="1200" height="54" fill="white"/>
+  <rect x="48" y="515" width="1200" height="1" fill="#f1f5f9"/>
+  <rect x="64" y="478" width="175" height="13" rx="3" fill="#1e293b"/>
+  <rect x="300" y="478" width="120" height="13" rx="3" fill="#64748b"/>
+  <rect x="500" y="478" width="65" height="13" rx="3" fill="#64748b"/>
+  <rect x="680" y="478" width="55" height="13" rx="3" fill="#64748b"/>
+  <rect x="856" y="472" width="80" height="26" rx="13" fill="#f3f4f6"/>
+  <rect x="872" y="478" width="48" height="13" rx="3" fill="#6b7280"/>
+  <rect x="1000" y="478" width="60" height="13" rx="3" fill="#64748b"/>
+  <circle cx="1228" cy="489" r="3" fill="#94a3b8"/>
+  <circle cx="1238" cy="489" r="3" fill="#94a3b8"/>
+  <circle cx="1248" cy="489" r="3" fill="#94a3b8"/>
+
+  <!-- Row 4  Coaching Session Notes, Scheduled amber -->
+  <rect x="48" y="516" width="1200" height="54" fill="white"/>
+  <rect x="48" y="569" width="1200" height="1" fill="#f1f5f9"/>
+  <rect x="64" y="532" width="200" height="13" rx="3" fill="#1e293b"/>
+  <rect x="64" y="550" width="80" height="10" rx="3" fill="#94a3b8"/>
+  <rect x="300" y="532" width="75" height="13" rx="3" fill="#64748b"/>
+  <rect x="500" y="532" width="80" height="13" rx="3" fill="#64748b"/>
+  <rect x="680" y="532" width="68" height="13" rx="3" fill="#64748b"/>
+  <rect x="852" y="526" width="104" height="26" rx="13" fill="#fef9c3"/>
+  <rect x="870" y="532" width="68" height="13" rx="3" fill="#854d0e"/>
+  <rect x="1000" y="532" width="68" height="13" rx="3" fill="#64748b"/>
+  <circle cx="1228" cy="543" r="3" fill="#94a3b8"/>
+  <circle cx="1238" cy="543" r="3" fill="#94a3b8"/>
+  <circle cx="1248" cy="543" r="3" fill="#94a3b8"/>
+
+  <!-- Row 5  Archived, gray muted -->
+  <rect x="48" y="570" width="1200" height="54" fill="white"/>
+  <rect x="64" y="586" width="150" height="13" rx="3" fill="#94a3b8"/>
+  <rect x="300" y="586" width="90" height="13" rx="3" fill="#cbd5e1"/>
+  <rect x="500" y="586" width="72" height="13" rx="3" fill="#cbd5e1"/>
+  <rect x="680" y="586" width="60" height="13" rx="3" fill="#cbd5e1"/>
+  <rect x="852" y="580" width="96" height="26" rx="13" fill="#f3f4f6"/>
+  <rect x="866" y="586" width="68" height="13" rx="3" fill="#9ca3af"/>
+  <rect x="1000" y="586" width="80" height="13" rx="3" fill="#cbd5e1"/>
+  <circle cx="1228" cy="597" r="3" fill="#d1d5db"/>
+  <circle cx="1238" cy="597" r="3" fill="#d1d5db"/>
+  <circle cx="1248" cy="597" r="3" fill="#d1d5db"/>
+
+  <!-- Pagination bar -->
+  <rect x="48" y="634" width="1200" height="1" fill="#e2e8f0"/>
+  <rect x="64" y="648" width="120" height="10" rx="3" fill="#94a3b8"/>
+  <rect x="1056" y="641" width="56" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="1124" y="641" width="28" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="1158" y="648" width="80" height="12" rx="3" fill="#94a3b8"/>
+  <rect x="1244" y="641" width="28" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+</svg>

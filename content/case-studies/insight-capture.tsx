@@ -1,4 +1,75 @@
-import type { CaseStudyContent } from "@/lib/case-studies/types";
+import type { CaseStudyContent, CarouselSlide } from "@/lib/case-studies/types";
+import { ResearchThemesSection } from "@/components/case-study/research-themes";
+import { PlanTradeoffsSection } from "@/components/case-study/plan-tradeoffs-section";
+
+const insightProductCarouselSlides: CarouselSlide[] = [
+  {
+    image: "/screenshots/carousel-1.png",
+    alt: "Form builder assembling fields from reusable components for school workflows",
+    title: "Build Forms with the Right Components",
+    description:
+      "Quickly assemble forms using a flexible set of components designed for real school workflows. No custom builds required.",
+  },
+  {
+    image: "/screenshots/carousel-2.png",
+    alt: "Admin interface for creating, editing, and managing school forms in one place",
+    title: "Admin Authoring Made Simple",
+    description:
+      "Admins can create, edit, and manage forms in one place, giving schools full control without relying on developers.",
+  },
+  {
+    image: "/screenshots/carousel-3.png",
+    alt: "Educator completing a form during an observation or reflection workflow",
+    title: "Complete Forms in the Flow of Work",
+    description:
+      "Coaches and educators can easily complete forms during observations or reflections, reducing friction and saving time.",
+  },
+  {
+    image: "/screenshots/carousel-4.png",
+    alt: "Dashboard showing form usage, completion status, and progress across the organization",
+    title: "See What's Happening Across Your Organization",
+    description:
+      "Track form usage, completion, and status in one dashboard so leaders can monitor progress and make informed decisions.",
+  },
+];
+
+const insightHowWeWorkedCarouselSlides: CarouselSlide[] = [
+  {
+    image: "/screenshots/c1-admin-ai.png",
+    alt: "Admin information architecture: dashboard with templates, completed forms, and form creation",
+    title: "Admin IA",
+    description:
+      "Shows the structure of the admin dashboard, including templates, completed forms, and form creation.",
+  },
+  {
+    image: "/screenshots/c2-coach-ai.png",
+    alt: "Coach information architecture: dashboard with completed forms and active form completion",
+    title: "Coach IA",
+    description:
+      "Shows the coach dashboard structure, including completed forms and active form completion.",
+  },
+  {
+    image: "/screenshots/c3-admin-authoring.png",
+    alt: "Admin authoring flow from creating and configuring a form through publishing",
+    title: "Admin Authoring Flow",
+    description:
+      "Outlines the step-by-step process for creating, configuring, and publishing a form.",
+  },
+  {
+    image: "/screenshots/c4-completing.png",
+    alt: "Coach completing flow from selecting a form through completion and submit",
+    title: "Coach Completing Flow",
+    description:
+      "Outlines the steps a coach takes to select, complete, and submit a form.",
+  },
+  {
+    image: "/screenshots/c5-wires.png",
+    alt: "Wireframes showing form components, input types, and configuration options",
+    title: "Wireframes",
+    description:
+      "Low-fidelity layouts showing form components, input types, and configuration options.",
+  },
+];
 
 export const insightCapture: CaseStudyContent = {
   slug: "insight-capture",
@@ -20,6 +91,7 @@ export const insightCapture: CaseStudyContent = {
       "Schools relied on a mix of documents, spreadsheets, and manual processes to collect important data. This made reporting slow, inconsistent, and prone to error.",
     ],
   },
+  overviewCarousel: insightProductCarouselSlides,
   outcomes: [
     {
       title: "Context",
@@ -69,31 +141,38 @@ export const insightCapture: CaseStudyContent = {
       tocLabel: "Users & Research",
       variant: "default",
       content: (
-        <div className="prose">
-          <p>
-            I worked closely with large school organizations that were actively
-            paying for development hours to digitize their forms. Instead of
-            continuing to build one off solutions, I took a step back to
-            understand their broader needs.
-          </p>
-          <p>
-            I reviewed a wide range of existing materials including Google Docs,
-            spreadsheets, PDFs, and printed documents. I also spoke directly
-            with school leaders and coaches to understand what they were trying
-            to measure and why.
-          </p>
-          <p>
-            Primary users included school leaders and coaches who needed to
-            collect and report on data. Teachers also contributed by submitting
-            forms and participating in observations.
-          </p>
-          <p>
-            Through this research, it became clear that the problem was not
-            just digitizing forms. It was creating a system that could
-            standardize data, reduce manual work, and support reporting across
-            the organization.
-          </p>
-        </div>
+        <>
+          <div className="prose">
+            <p>
+              School organizations were paying for custom form builds to
+              digitize their workflows, but each request solved a single problem
+              in isolation.
+            </p>
+            <p>
+              To understand the broader need, I reviewed existing materials
+              across formats including Google Docs, spreadsheets, PDFs, and
+              printed documents. I also spoke directly with school leaders and
+              coaches about what they were trying to measure and why.
+            </p>
+            <p>
+              School leaders and coaches needed to collect, structure, and report
+              on data. Teachers contributed by submitting forms and participating
+              in observations.
+            </p>
+            <p>
+              What emerged was that the problem was not just digitizing forms.
+            </p>
+            <p>
+              Organizations needed a system that could standardize data, reduce
+              manual work, and support reporting across the entire organization.
+            </p>
+            <p>
+              The real problem was not form creation. It was the lack of a system
+              behind the data.
+            </p>
+          </div>
+          <ResearchThemesSection />
+        </>
       ),
     },
     {
@@ -102,30 +181,19 @@ export const insightCapture: CaseStudyContent = {
       tocLabel: "Plans & Tradeoffs",
       variant: "alt",
       content: (
-        <div className="prose">
-          <p>
-            Instead of building individual forms for each customer, I proposed a
-            flexible system that would allow organizations to create and manage
-            their own forms.
-          </p>
-          <p>
-            The core idea was to centralize data collection while giving admins
-            full control over how forms were structured and used. This required
-            balancing flexibility with usability. The system needed to support a
-            wide range of form types without becoming overly complex.
-          </p>
-          <p>
-            We focused on creating a structured authoring experience using
-            familiar input types such as text fields, date pickers, file
-            uploads, radio groups, and checkboxes. At the same time, we ensured
-            that all data would be stored in a consistent format to support
-            reporting.
-          </p>
-          <p>
-            This approach allowed organizations to adapt the system to their
-            needs without requiring ongoing development work.
-          </p>
-        </div>
+        <>
+          <div className="prose">
+            <p>
+              To move beyond one-off form builds, I designed a flexible system
+              that allowed organizations to create and manage their own forms.
+            </p>
+            <p>
+              This required balancing flexibility, structure, and scalability
+              across a wide range of use cases.
+            </p>
+          </div>
+          <PlanTradeoffsSection />
+        </>
       ),
     },
     {
@@ -133,6 +201,7 @@ export const insightCapture: CaseStudyContent = {
       kicker: "How We Worked",
       tocLabel: "How We Worked",
       variant: "default",
+      carouselAfter: insightHowWeWorkedCarouselSlides,
       content: (
         <div className="prose">
           <p>
@@ -163,6 +232,7 @@ export const insightCapture: CaseStudyContent = {
       kicker: "What We Built",
       tocLabel: "What We Built",
       variant: "alt",
+      carouselAfter: insightProductCarouselSlides,
       content: (
         <div className="prose">
           <p>
@@ -200,12 +270,12 @@ export const insightCapture: CaseStudyContent = {
       variant: "default",
       content: (
         <div className="prose">
-          <ul>
+          <ul className="results-list">
             <li>Centralized data collection across the organization</li>
             <li>Reduced manual data entry and human error</li>
             <li>Faster reporting with higher confidence in the data</li>
             <li>Fewer tools and less fragmented workflows</li>
-            <li>Mobile friendly access from any device</li>
+            <li>Mobile-friendly access from any device</li>
             <li>Reduced delays between data capture and insight</li>
             <li>Increased adoption due to simplicity and flexibility</li>
           </ul>
