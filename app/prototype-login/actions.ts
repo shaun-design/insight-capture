@@ -16,15 +16,13 @@ export async function prototypeLoginAction(formData: FormData) {
     redirect(prototypeLoginHref(undefined, "config"));
   }
 
-  const user = String(formData.get("user") ?? "");
   const password = String(formData.get("password") ?? "");
   const next = safePrototypeNextParam(String(formData.get("next") ?? ""));
 
-  const eu = process.env["PROTOTYPE_AUTH_USER"]!.trim();
   const ep = process.env["PROTOTYPE_AUTH_PASSWORD"]!.trim();
   const secret = process.env["PROTOTYPE_AUTH_SECRET"]!.trim();
 
-  if (!constantTimeEqual(user, eu) || !constantTimeEqual(password, ep)) {
+  if (!constantTimeEqual(password, ep)) {
     redirect(prototypeLoginHref(next, "1"));
   }
 

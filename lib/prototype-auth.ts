@@ -18,8 +18,7 @@ export function isPrototypePublicPath(pathname: string): boolean {
 
 export function isPrototypeAuthConfigured(): boolean {
   return Boolean(
-    process.env["PROTOTYPE_AUTH_USER"]?.trim() &&
-      process.env["PROTOTYPE_AUTH_PASSWORD"]?.trim() &&
+    process.env["PROTOTYPE_AUTH_PASSWORD"]?.trim() &&
       process.env["PROTOTYPE_AUTH_SECRET"]?.trim(),
   );
 }

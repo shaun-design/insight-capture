@@ -22,7 +22,7 @@ export default async function PrototypeLoginPage({ searchParams }: Props) {
 
       {err === "1" && (
         <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-          Invalid username or password.
+          Invalid password.
         </p>
       )}
       {err === "config" && (
@@ -33,16 +33,6 @@ export default async function PrototypeLoginPage({ searchParams }: Props) {
 
       <form action={prototypeLoginAction} className="flex flex-col gap-4">
         <input type="hidden" name="next" value={next} />
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-neutral-700">Username</span>
-          <input
-            name="user"
-            type="text"
-            autoComplete="username"
-            required
-            className="rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 outline-none focus:border-[#0a6ab1] focus:ring-1 focus:ring-[#0a6ab1]"
-          />
-        </label>
         <label className="flex flex-col gap-1 text-sm">
           <span className="font-medium text-neutral-700">Password</span>
           <PrototypeLoginPasswordField />
